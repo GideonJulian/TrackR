@@ -1,1 +1,40 @@
 @import "tailwindcss";
+
+.border-outline-variant {
+  border-color: rgb(187 202 191 / 1);
+}
+
+.px-margin {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.py-md {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.text-label-sm {
+  font-size: 16px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+.py-sm {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.px-lg {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.tracking-widest {
+    letter-spacing: 0.1em;
+}
+.font-display {
+    font-family: Playfair Display;
+}
