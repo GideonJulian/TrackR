@@ -1,5 +1,7 @@
 @import "tailwindcss";
-
+html{ 
+    overflow-x: hidden;
+}
 .border-outline-variant {
   border-color: rgb(187 202 191 / 1);
 }
@@ -65,4 +67,16 @@
 .animate-float-3d {
     animation: float 4s ease-in-out infinite;
     transform-style: preserve-3d;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotateX(6deg) rotateY(6deg);
+  }
+  100% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
 }
