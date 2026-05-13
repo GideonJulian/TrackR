@@ -2,6 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Layouts from "./Layouts/Layouts";
+import AuthPage from "./pages/AuthPage";
 const App = () => {
   const route = createBrowserRouter([
     {
@@ -13,6 +14,10 @@ const App = () => {
           element: <Home />,
         },
       ],
+    },
+    {
+      path: "/auth",
+      element: <AuthPage />,
     },
   ]);
 
