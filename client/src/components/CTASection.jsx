@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
+import { useNavigate } from "react-router-dom";
 
 const CTASection = () => {
   const sectionRef = useRef(null);
   const glowRef = useRef(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     // Floating glow animation
     gsap.to(glowRef.current, {
@@ -106,6 +107,7 @@ const CTASection = () => {
                 scale: 1.04,
                 y: -2,
               }}
+              onClick={()=> navigate('/auth')}
               whileTap={{ scale: 0.97 }}
               className="bg-[#006c49] hover:bg-[#00875a] text-white px-8 py-4 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 shadow-lg"
             >

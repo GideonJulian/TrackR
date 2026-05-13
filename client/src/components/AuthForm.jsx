@@ -1,6 +1,27 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaLinkedin } from "react-icons/fa";
+
+/**
+ * Simple toast system (no library needed)
+ */
+const Toast = ({ message, type }) => {
+  const colors =
+    type === "success"
+      ? "bg-green-600"
+      : type === "error"
+      ? "bg-red-600"
+      : "bg-gray-800";
+
+  return (
+    <div
+      className={`fixed top-5 right-5 px-4 py-3 rounded-lg text-white shadow-lg z-50 animate-fadeIn ${colors}`}
+    >
+      {message}
+    </div>
+  );
+};
+
 const AuthForm = ({ activeTab, setActiveTab }) => {
   // LOGIN STATE
   const [loginData, setLoginData] = useState({
@@ -15,6 +36,17 @@ const AuthForm = ({ activeTab, setActiveTab }) => {
     password: "",
     confirmPassword: "",
   });
+
+  // LOADING STATE
+  const [loading, setLoading] = useState(false);
+
+  // TOAST STATE
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   // HANDLE CHANGE (LOGIN)
   const handleLoginChange = (e) => {
@@ -32,41 +64,63 @@ const AuthForm = ({ activeTab, setActiveTab }) => {
     });
   };
 
-  // LOGIN SUBMIT (API READY)
-  const handleLoginSubmit = (e) => {
+  // LOGIN SUBMIT
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    console.log("LOGIN PAYLOAD:", loginData);
+    try {
+      console.log("LOGIN PAYLOAD:", loginData);
 
-    // 👉 API LATER
-    // await fetch("/api/login", { method: "POST", body: JSON.stringify(loginData) })
+      // simulate API
+      await new Promise((res) => setTimeout(res, 1200));
+
+      showToast("Login successful 🎉", "success");
+    } catch (err) {
+      showToast("Login failed ❌", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // REGISTER SUBMIT (API READY)
-  const handleRegisterSubmit = (e) => {
+  // REGISTER SUBMIT
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("REGISTER PAYLOAD:", registerData);
-
     if (registerData.password !== registerData.confirmPassword) {
-      alert("Passwords do not match");
+      showToast("Passwords do not match", "error");
       return;
     }
 
-    // 👉 API LATER
-    // await fetch("/api/register", { method: "POST", body: JSON.stringify(registerData) })
+    setLoading(true);
+
+    try {
+      console.log("REGISTER PAYLOAD:", registerData);
+
+      await new Promise((res) => setTimeout(res, 1200));
+
+      showToast("Account created successfully 🎉", "success");
+    } catch (err) {
+      showToast("Registration failed ❌", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // LINKEDIN LOGIN (FUTURE HOOK)
+  // LINKEDIN LOGIN
   const handleLinkedInLogin = () => {
     console.log("LinkedIn OAuth triggered");
+    showToast("Redirecting to LinkedIn...", "success");
 
-    // 👉 Later:
-    // window.location.href = "YOUR_BACKEND/linkedin/auth";
+    // future:
+    // window.location.href = "/api/auth/linkedin";
   };
 
   return (
     <div className="w-full max-w-[420px]">
+
+      {/* TOAST */}
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       {/* TABS */}
       <div className="flex border-b border-outline-variant mb-8">
@@ -106,83 +160,81 @@ const AuthForm = ({ activeTab, setActiveTab }) => {
         </p>
       </div>
 
-      {/* LOGIN FORM */}
+      {/* LOGIN */}
       {activeTab === "login" && (
         <form onSubmit={handleLoginSubmit} className="space-y-5">
 
           <input
-            type="email"
             name="email"
             placeholder="Email address"
-            value={loginData.email}
             onChange={handleLoginChange}
-            className="w-full h-12 px-4 border border-gray-300 bg-white focus:border-green-600 outline-none"
+            className="w-full h-12 px-4 border border-gray-300"
           />
 
           <input
-            type="password"
             name="password"
+            type="password"
             placeholder="Password"
-            value={loginData.password}
             onChange={handleLoginChange}
-            className="w-full h-12 px-4 border border-gray-300 bg-white focus:border-green-600 outline-none"
+            className="w-full h-12 px-4 border border-gray-300"
           />
 
           <button
             type="submit"
-            className="w-full h-12 bg-green-700 text-white font-bold hover:bg-green-800 transition"
+            disabled={loading}
+            className="w-full h-12 bg-green-700 text-white font-bold flex items-center justify-center gap-2 disabled:opacity-70"
           >
-            Sign In
+            {loading && (
+              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+            )}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
-
         </form>
       )}
 
-      {/* REGISTER FORM */}
+      {/* REGISTER */}
       {activeTab === "register" && (
         <form onSubmit={handleRegisterSubmit} className="space-y-5">
 
           <input
-            type="text"
             name="name"
             placeholder="Full name"
-            value={registerData.name}
             onChange={handleRegisterChange}
-            className="w-full h-12 px-4 border border-gray-300 bg-white focus:border-green-600 outline-none"
+            className="w-full h-12 px-4 border border-gray-300"
           />
 
           <input
-            type="email"
             name="email"
             placeholder="Email address"
-            value={registerData.email}
             onChange={handleRegisterChange}
-            className="w-full h-12 px-4 border border-gray-300 bg-white focus:border-green-600 outline-none"
+            className="w-full h-12 px-4 border border-gray-300"
           />
 
           <input
-            type="password"
             name="password"
+            type="password"
             placeholder="Password"
-            value={registerData.password}
             onChange={handleRegisterChange}
-            className="w-full h-12 px-4 border border-gray-300 bg-white focus:border-green-600 outline-none"
+            className="w-full h-12 px-4 border border-gray-300"
           />
 
           <input
-            type="password"
             name="confirmPassword"
+            type="password"
             placeholder="Confirm password"
-            value={registerData.confirmPassword}
             onChange={handleRegisterChange}
-            className="w-full h-12 px-4 border border-gray-300 bg-white focus:border-green-600 outline-none"
+            className="w-full h-12 px-4 border border-gray-300"
           />
 
           <button
             type="submit"
-            className="w-full h-12 bg-green-700 text-white font-bold hover:bg-green-800 transition"
+            disabled={loading}
+            className="w-full h-12 bg-green-700 text-white font-bold flex items-center justify-center gap-2 disabled:opacity-70"
           >
-            Create Account
+            {loading && (
+              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+            )}
+            {loading ? "Creating..." : "Create Account"}
           </button>
         </form>
       )}
@@ -195,24 +247,22 @@ const AuthForm = ({ activeTab, setActiveTab }) => {
       </div>
 
       {/* SOCIAL LOGIN */}
-     <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3">
 
-  {/* GOOGLE */}
-  <button className="h-12 border flex items-center justify-center gap-2 hover:bg-gray-50 transition">
-    <FcGoogle className="text-xl" />
-    <span className="text-sm font-medium">Google</span>
-  </button>
+        <button className="h-12 border flex items-center justify-center gap-2 hover:bg-gray-50 transition">
+          <FcGoogle className="text-xl" />
+          Google
+        </button>
 
-  {/* LINKEDIN */}
-  <button
-    onClick={handleLinkedInLogin}
-    className="h-12 border flex items-center justify-center gap-2 hover:bg-gray-50 transition"
-  >
-    <FaLinkedin className="text-[#0A66C2] text-lg" />
-    <span className="text-sm font-medium">LinkedIn</span>
-  </button>
+        <button
+          onClick={handleLinkedInLogin}
+          className="h-12 border flex items-center justify-center gap-2 hover:bg-gray-50 transition"
+        >
+          <FaLinkedin className="text-[#0A66C2]" />
+          LinkedIn
+        </button>
 
-</div>
+      </div>
     </div>
   );
 };

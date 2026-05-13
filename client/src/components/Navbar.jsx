@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../../public/favicon.png";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-
+const navigate = useNavigate();
   return (
     <>
       {/* NAVBAR */}
@@ -43,7 +43,9 @@ const Navbar = () => {
           </div>
 
           {/* DESKTOP BUTTON */}
-          <button className="hidden md:block bg-[#006c49] text-white px-6 py-2 rounded-md font-semibold text-sm">
+          <button 
+          onClick={()=> navigate('/auth')}
+          className="hidden md:block bg-[#006c49] text-white px-6 py-2 rounded-md font-semibold text-sm">
             Get Started
           </button>
 
@@ -106,7 +108,10 @@ const Navbar = () => {
                   Contact
                 </Link>
 
-                <button className="mt-4 bg-[#006c49] text-white py-3 rounded-xl font-semibold">
+                <button 
+                  onClick={() => navigate('/auth')}
+                  className="mt-4 bg-[#006c49] text-white py-3 rounded-xl font-semibold"
+                >
                   Get Started
                 </button>
               </div>

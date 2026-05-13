@@ -7,10 +7,11 @@ import gsap from "gsap";
 import users1 from "../../public/users1.png";
 import users2 from "../../public/users2.png";
 import users3 from "../../public/users3.png";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const phoneRef = useRef(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     gsap.to(phoneRef.current, {
       y: -15,
@@ -73,6 +74,7 @@ const Hero = () => {
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
+            onClick={()=> navigate('/auth')}
             className="bg-[#006c49] text-white cursor-pointer px-6 sm:px-10 py-3 rounded-lg font-semibold text-sm sm:text-base hover:brightness-90 transition-all w-full sm:w-auto"
           >
             Get Started Free
