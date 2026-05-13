@@ -42,7 +42,42 @@ const registerUser = async (req, res) => {
         });
     }
 }
+const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
+        // check if user exist
+        const user = await User.findOne({ email: email.toLowerCase() });
+        if (!user) {
+            return res.status(404).json({
+                message: "Sorry User not found"
+            });
+        }
+
+        // compare password
+        const isMatch = await user.matchPassword(password);
+        if (!isMatch) {
+            return res.status(400).json({
+                message: "Invalid credentials"
+            });
+        }
+
+        res.status(200).json({
+            message: "Login successful..",
+            user: {
+                _id: user._id,
+                email: user.email,
+                name: user.name
+            }
+        });
+    } catch (error) {
+        console.log('Error logging in user:', error);
+        res.status(500).json({
+            message: "Internal Server Error",
+        });
+    }
+}
 export {
-    registerUser
+    registerUser, 
+    loginUser
 }
