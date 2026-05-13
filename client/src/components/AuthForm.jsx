@@ -91,7 +91,7 @@ const AuthForm = ({ activeTab, setActiveTab }) => {
       showToast("Passwords do not match", "error");
       return;
     }
-
+    
     setLoading(true);
 
     try {
