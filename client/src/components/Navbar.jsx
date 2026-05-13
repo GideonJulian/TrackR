@@ -11,10 +11,18 @@ const Navbar = () => {
       {/* NAVBAR */}
       <div className="bg-[#f4fbf4] border-b fixed top-0 left-0 right-0 z-50">
         <div className="flex justify-between items-center w-full px-4 sm:px-6 lg:px-margin py-3 max-w-7xl mx-auto">
-
           {/* LOGO */}
           <div className="flex items-center gap-2">
-            <img src={logo} alt="TrackR Logo" className="w-8 h-8 sm:w-10 sm:h-10" />
+            {/* <img
+              salt=""
+              className="w-full h-full object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfJ2NfQTiCOgMUblCHYAgyotOHR72xjPKWBBHVrlYQMwwHje2LBKR6UqlIclvOMlxzxnRtG4J6OOEPx85obF1bF-QwhLWWJFzrWknjpWznqTD-c0Ydisc2zB5iAJI_Nu-TiZILSFeYEpQMUrpQ2Fxv4yi91FHIpAlE7epzAt8xEp-eeZSba8WpUkjOI24GHK91xrs3rTpUiHSbns1-H9Zp0W2UB-3nsKT2iDgV-r9BzAyBArkT7Pr_5VlVFIC-UWsOfKzb44fjvKeu"
+              alt="TrackR Logo"
+              className="w-8 h-8 sm:w-10 sm:h-10"
+            /> */}
+            <span className="material-symbols-outlined text-[#006c49] text-3xl">
+              track_changes
+            </span>
 
             <span className="text-[#161d19] font-black text-xl sm:text-2xl tracking-tight">
               Track<span className="text-[#006c49]">R</span>
@@ -23,9 +31,15 @@ const Navbar = () => {
 
           {/* DESKTOP LINKS */}
           <div className="hidden md:flex items-center gap-10">
-            <Link className="text-sm text-gray-600 hover:text-[#006c49]">Features</Link>
-            <Link className="text-sm text-gray-600 hover:text-[#006c49]">How it works</Link>
-            <Link className="text-sm text-gray-600 hover:text-[#006c49]">Contact</Link>
+            <Link className="text-sm text-gray-600 hover:text-[#006c49]">
+              Features
+            </Link>
+            <Link className="text-sm text-gray-600 hover:text-[#006c49]">
+              How it works
+            </Link>
+            <Link className="text-sm text-gray-600 hover:text-[#006c49]">
+              Contact
+            </Link>
           </div>
 
           {/* DESKTOP BUTTON */}
