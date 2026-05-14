@@ -5,6 +5,8 @@ import Layouts from "./Layouts/Layouts";
 import AuthPage from "./pages/AuthPage";
 import DashboardLayout from "./Layouts/DashboardLayout";
 import DashboardHome from "./pages/dashboard/DashboardHome";
+import Application from "./pages/dashboard/Application";
+import Interviews from "./pages/dashboard/interviews";
 const App = () => {
   const route = createBrowserRouter([
     {
@@ -31,8 +33,16 @@ const App = () => {
           index: true,
           element: <DashboardHome />,
         },
+        {
+          path: "applications",
+          element: <Application />,
+        },
+        {
+          path: "interviews",
+          element: <Interviews />,
+        },
       ],
-    }
+    },
   ]);
 
   return <RouterProvider router={route} />;

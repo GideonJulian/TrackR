@@ -1,40 +1,48 @@
 import React, { useState } from "react";
+import { useNavigate, Outlet } from "react-router-dom";
+import MobileBottomNav from "../components/Dashboard/MobileBottomNav";
 
-const DashboardLayout = ({ children }) => {
-  /**
-   * ACTIVE TAB STATE
-   */
+const DashboardLayout = () => {
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState("dashboard");
 
-  /**
-   * SIDEBAR ITEMS
-   */
   const navItems = [
     {
       id: "dashboard",
-      label: "Dashboard",
-      icon: "dashboard",
+      label: "Home",
+      icon: "home",
+      path: "/dashboard",
     },
     {
       id: "applications",
-      label: "Applications",
-      icon: "work",
+      label: "Apps",
+      icon: "list_alt",
+      path: "/dashboard/applications",
     },
     {
       id: "interviews",
-      label: "Interviews",
-      icon: "event_available",
+      label: "Add Job",
+      icon: "add_box",
+      path: "/dashboard/interviews",
     },
     {
       id: "resumes",
-      label: "Resumes",
-      icon: "description",
+      label: "Resume",
+      icon: "article",
+      path: "/dashboard/resumes",
+    },
+    {
+      id: "profile",
+      label: "Profile",
+      icon: "person",
+      path: "/dashboard/profile",
     },
   ];
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#f4fbf4] text-[#161d19]">
-      {/* SIDEBAR */}
+      {/* DESKTOP SIDEBAR */}
       <aside className="hidden md:flex flex-col h-full w-60 bg-[#eef6ee] border-r border-[#bbcabf] p-4 space-y-4 fixed left-0 top-0">
         {/* LOGO */}
         <div className="flex items-center gap-2 mb-8 px-2">
@@ -53,15 +61,18 @@ const DashboardLayout = ({ children }) => {
           </div>
         </div>
 
-        {/* NAVIGATION */}
+        {/* DESKTOP NAV */}
         <nav className="flex-1 space-y-2">
-          {navItems.map((item) => {
+          {navItems.slice(0, 4).map((item) => {
             const isActive = activeTab === item.id;
 
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  navigate(item.path);
+                }}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-md transition-all duration-300 font-medium ${
                   isActive
                     ? "bg-[#006c49] text-white shadow-md"
@@ -77,47 +88,30 @@ const DashboardLayout = ({ children }) => {
             );
           })}
         </nav>
-
-        {/* ADD JOB BUTTON */}
-        <button className="w-full py-3 bg-[#006c49] hover:bg-[#00563a] transition-all text-white rounded-xl flex items-center justify-center gap-2 font-semibold shadow-md">
-          <span className="material-symbols-outlined text-[20px]">add</span>
-          Add New Job
-        </button>
       </aside>
 
-      {/* MAIN AREA */}
-      <main className="flex-1 ml-0 md:ml-60 overflow-y-auto">
-        {/* TOP BAR */}
-        <header className="flex justify-between items-center h-16 px-6 bg-white border-b border-[#dde4dd] sticky top-0 z-20">
-          <div>
-            <h2 className="text-xl font-bold capitalize text-[#161d19]">
-              {activeTab}
-            </h2>
+      {/* MAIN */}
+      <main className="flex-1 ml-0 md:ml-60 overflow-y-auto pb-20 md:pb-0">
+        {/* HEADER */}
+        <header className="flex justify-between items-center h-16 px-5 bg-[#eef6ee] border-b border-[#dde4dd]">
+          {/* MOBILE + DESKTOP LOGO */}
+          <div className="flex items-center gap-2">
+            <h1 className="text-[#006c49] font-black text-3xl tracking-tight">
+              Track<span className="text-[#161d19]">r</span>
+            </h1>
           </div>
 
+          {/* RIGHT */}
           <div className="flex items-center gap-4">
-            {/* SEARCH */}
-            <div className="hidden lg:flex items-center border border-gray-300 rounded-lg px-3 py-2 bg-[#f8fbf8]">
-              <span className="material-symbols-outlined text-gray-400 text-[20px]">
-                search
-              </span>
-
-              <input
-                type="text"
-                placeholder="Search applications..."
-                className="bg-transparent outline-none text-sm ml-2 w-56"
-              />
-            </div>
-
             {/* NOTIFICATION */}
-            <button className="w-10 h-10 rounded-full hover:bg-[#eef6ee] flex items-center justify-center transition-all">
-              <span className="material-symbols-outlined text-gray-600">
+            <button>
+              <span className="material-symbols-outlined text-[28px] text-[#161d19]">
                 notifications
               </span>
             </button>
 
-            {/* USER */}
-            <div className="w-10 h-10 rounded-full bg-[#dde4dd] overflow-hidden border border-gray-300">
+            {/* PROFILE */}
+            <div className="w-11 h-11 rounded-full overflow-hidden border-[3px] border-black">
               <img
                 src="https://i.pravatar.cc/100"
                 alt="profile"
@@ -128,8 +122,18 @@ const DashboardLayout = ({ children }) => {
         </header>
 
         {/* PAGE CONTENT */}
-        <div className="p-6">{children}</div>
+        <div className="p-6">
+          <Outlet />
+        </div>
       </main>
+
+      {/* MOBILE BOTTOM NAV */}
+      <MobileBottomNav
+        navItems={navItems}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        navigate={navigate}
+      />
     </div>
   );
 };
