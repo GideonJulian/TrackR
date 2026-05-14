@@ -10,15 +10,17 @@ const DashboardLayout = ({ children }) => {
           <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-white">
             <span className="material-symbols-outlined text-[#006c49] text-8xl">
               track_changes
-            </span> 
+            </span>
           </div>
 
           <div>
             <span className="text-[#161d19] font-black text-xl sm:text-2xl tracking-tight">
               Track<span className="text-[#006c49]">R</span>
             </span>
-           
-            <p className="text-[13px] leading-[1.4] font-[500] tracking-[0.01rem] text-gray-500">Career Manager</p>
+
+            <p className="text-[13px] leading-[1.4] font-[500] tracking-[0.01rem] text-gray-500">
+              Career Manager
+            </p>
           </div>
         </div>
 
