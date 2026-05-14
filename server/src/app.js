@@ -7,28 +7,29 @@ const app = express();
 app.use(express.json());
 
 const allowedOrigins = [
-  "trackr-sepia.vercel.app",
   "http://localhost:5173",
-  // "https://trackr-zpcz.onrender.com"
+  "https://trackr-sepia.vercel.app"
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
       }
+
+      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
   })
 );
+
+// routes
 app.use("/api/v1/users", userRouter);
 
+// health check
 app.get("/", (req, res) => {
   res.send("TrackR API is running 🚀");
 });
