@@ -5,7 +5,7 @@ import logo from "../../public/favicon.png";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <>
       {/* NAVBAR */}
@@ -43,9 +43,10 @@ const navigate = useNavigate();
           </div>
 
           {/* DESKTOP BUTTON */}
-          <button 
-          onClick={()=> navigate('/auth')}
-          className="hidden md:block bg-[#006c49] text-white px-6 py-2 rounded-md font-semibold text-sm">
+          <button
+            onClick={() => navigate("/auth")}
+            className="hidden md:block bg-[#006c49] text-white px-6 py-2 rounded-md font-semibold text-sm"
+          >
             Get Started
           </button>
 
@@ -108,8 +109,8 @@ const navigate = useNavigate();
                   Contact
                 </Link>
 
-                <button 
-                  onClick={() => navigate('/auth')}
+                <button
+                  onClick={() => navigate("/auth")}
                   className="mt-4 bg-[#006c49] text-white py-3 rounded-xl font-semibold"
                 >
                   Get Started
