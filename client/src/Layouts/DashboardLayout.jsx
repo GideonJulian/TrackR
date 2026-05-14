@@ -94,32 +94,41 @@ const DashboardLayout = () => {
       <main className="flex-1 ml-0 md:ml-60 overflow-y-auto pb-20 md:pb-0">
         {/* HEADER */}
         <header className="flex justify-between items-center h-16 px-5 bg-[#eef6ee] border-b border-[#dde4dd]">
-          {/* MOBILE + DESKTOP LOGO */}
-          <div className="flex items-center gap-2">
-            <h1 className="text-[#006c49] font-black text-3xl tracking-tight">
-              Track<span className="text-[#161d19]">r</span>
-            </h1>
-          </div>
+  
+  {/* TITLE */}
+  <div className="flex items-center gap-2">
 
-          {/* RIGHT */}
-          <div className="flex items-center gap-4">
-            {/* NOTIFICATION */}
-            <button>
-              <span className="material-symbols-outlined text-[28px] text-[#161d19]">
-                notifications
-              </span>
-            </button>
+    {/* MOBILE */}
+    <h1 className="block md:hidden text-[#006c49] font-black text-3xl tracking-tight">
+      Track<span className="text-[#161d19]">r</span>
+    </h1>
 
-            {/* PROFILE */}
-            <div className="w-11 h-11 rounded-full overflow-hidden border-[3px] border-black">
-              <img
-                src="https://i.pravatar.cc/100"
-                alt="profile"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        </header>
+    {/* DESKTOP */}
+    <h1 className="hidden md:block text-2xl font-bold capitalize text-[#161d19]">
+      Dashboard
+    </h1>
+
+  </div>
+
+  {/* RIGHT */}
+  <div className="flex items-center gap-4">
+    
+    <button>
+      <span className="material-symbols-outlined text-[28px] text-[#161d19]">
+        notifications
+      </span>
+    </button>
+
+    <div className="w-11 h-11 rounded-full overflow-hidden border-[3px] border-black">
+      <img
+        src="https://i.pravatar.cc/100"
+        alt="profile"
+        className="w-full h-full object-cover"
+      />
+    </div>
+
+  </div>
+</header>
 
         {/* PAGE CONTENT */}
         <div className="p-6">
