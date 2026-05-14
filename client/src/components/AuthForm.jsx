@@ -283,7 +283,7 @@ const AuthForm = ({ activeTab, setActiveTab }) => {
    */
   const handleLinkedInLogin = () => {
     window.location.href =
-      "https://trackr-zpcz.onrender.com/api/v1/auth/linkedin";
+      "https://trackr-zpcz.onrender.com/api/v1/users/linkedin";
   };
 
   return (

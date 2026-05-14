@@ -9,8 +9,8 @@ dotenv.config({
 });
 
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://trackr-sepia.vercel.app"
+  "https://trackr-sepia.vercel.app",
+  // "http://localhost:5173",
 ];
 
 app.use(
