@@ -155,7 +155,7 @@ const DashboardLayout = () => {
           
           {/* LEFT */}
           <div className="flex items-center gap-2">
-            
+              
             {/* MOBILE TITLE */}
             <h1 className="block md:hidden text-[#006c49] font-black text-3xl tracking-tight">
               Track<span className="text-[#161d19]">r</span>

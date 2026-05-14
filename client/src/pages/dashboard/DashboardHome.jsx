@@ -64,12 +64,13 @@ const DashboardHome = () => {
               className="h-12 px-6 rounded-xl bg-[#006c49] hover:bg-[#00563a] text-white font-semibold transition-all"
             >
               Add Your First Job
-               <span className="material-symbols-outlined text-[#fff] text-[30px]">
-               add
-              </span>
             </button>
 
-          
+            <button
+              className="h-12 px-6 rounded-xl border border-[#bbcabf] hover:bg-[#f4fbf4] text-[#161d19] font-semibold transition-all"
+            >
+              Setup Profile
+            </button>
 
           </div>
 
