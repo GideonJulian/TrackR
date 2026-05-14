@@ -151,7 +151,7 @@ const DashboardLayout = () => {
       <main className="flex-1 ml-0 md:ml-60 overflow-y-auto pb-20 md:pb-0">
         
         {/* HEADER */}
-        <header className="flex justify-between items-center h-16 px-5 bg-[#eef6ee] border-b border-[#dde4dd]">
+       <header className="fixed top-0 left-0 md:left-60 right-0 z-40 flex justify-between items-center h-16 px-5 bg-[#eef6ee] border-b border-[#dde4dd]">
           
           {/* LEFT */}
           <div className="flex items-center gap-2">
@@ -191,7 +191,7 @@ const DashboardLayout = () => {
         </header>
 
         {/* PAGE CONTENT */}
-        <div className="p-6">
+        <div className="p-6 pt-16">
           <Outlet />
         </div>
       </main>
