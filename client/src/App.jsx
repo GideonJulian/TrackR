@@ -6,7 +6,7 @@ import AuthPage from "./pages/AuthPage";
 import DashboardLayout from "./Layouts/DashboardLayout";
 import DashboardHome from "./pages/dashboard/DashboardHome";
 import Application from "./pages/dashboard/Application";
-import Interviews from "./pages/dashboard/interviews";
+import Interviews from "./pages/dashboard/Interviews";
 const App = () => {
   const route = createBrowserRouter([
     {
