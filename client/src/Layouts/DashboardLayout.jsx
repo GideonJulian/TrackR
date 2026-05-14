@@ -1,13 +1,76 @@
-import React, { useState } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
+import React from "react";
+import {
+  useNavigate,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
+
 import MobileBottomNav from "../components/Dashboard/MobileBottomNav";
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [activeTab, setActiveTab] = useState("dashboard");
+  /**
+   * ACTIVE TAB FROM URL
+   */
+  const getActiveTab = () => {
+    if (location.pathname === "/dashboard") {
+      return "dashboard";
+    }
 
-  const navItems = [
+    if (location.pathname.includes("/applications")) {
+      return "applications";
+    }
+
+    if (location.pathname.includes("/interviews")) {
+      return "interviews";
+    }
+
+    if (location.pathname.includes("/resumes")) {
+      return "resumes";
+    }
+
+    return "dashboard";
+  };
+
+  const activeTab = getActiveTab();
+
+  /**
+   * DESKTOP SIDEBAR NAV
+   */
+  const desktopNavItems = [
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      icon: "dashboard",
+      path: "/dashboard",
+    },
+    {
+      id: "applications",
+      label: "Applications",
+      icon: "work",
+      path: "/dashboard/applications",
+    },
+    {
+      id: "interviews",
+      label: "Add Job",
+      icon: "add_box",
+      path: "/dashboard/interviews",
+    },
+    {
+      id: "resumes",
+      label: "Resume",
+      icon: "article",
+      path: "/dashboard/resumes",
+    },
+  ];
+
+  /**
+   * MOBILE NAV
+   * PROFILE REMOVED
+   */
+  const mobileNavItems = [
     {
       id: "dashboard",
       label: "Home",
@@ -32,18 +95,13 @@ const DashboardLayout = () => {
       icon: "article",
       path: "/dashboard/resumes",
     },
-    {
-      id: "profile",
-      label: "Profile",
-      icon: "person",
-      path: "/dashboard/profile",
-    },
   ];
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#f4fbf4] text-[#161d19]">
       {/* DESKTOP SIDEBAR */}
       <aside className="hidden md:flex flex-col h-full w-60 bg-[#eef6ee] border-r border-[#bbcabf] p-4 space-y-4 fixed left-0 top-0">
+        
         {/* LOGO */}
         <div className="flex items-center gap-2 mb-8 px-2">
           <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm">
@@ -57,22 +115,21 @@ const DashboardLayout = () => {
               Track<span className="text-[#006c49]">R</span>
             </h1>
 
-            <p className="text-xs text-gray-500 font-medium">Career Manager</p>
+            <p className="text-xs text-gray-500 font-medium">
+              Career Manager
+            </p>
           </div>
         </div>
 
-        {/* DESKTOP NAV */}
+        {/* SIDEBAR NAV */}
         <nav className="flex-1 space-y-2">
-          {navItems.slice(0, 4).map((item) => {
+          {desktopNavItems.map((item) => {
             const isActive = activeTab === item.id;
 
             return (
               <button
                 key={item.id}
-                onClick={() => {
-                  setActiveTab(item.id);
-                  navigate(item.path);
-                }}
+                onClick={() => navigate(item.path)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-md transition-all duration-300 font-medium ${
                   isActive
                     ? "bg-[#006c49] text-white shadow-md"
@@ -92,29 +149,37 @@ const DashboardLayout = () => {
 
       {/* MAIN */}
       <main className="flex-1 ml-0 md:ml-60 overflow-y-auto pb-20 md:pb-0">
+        
         {/* HEADER */}
         <header className="flex justify-between items-center h-16 px-5 bg-[#eef6ee] border-b border-[#dde4dd]">
-          {/* TITLE */}
+          
+          {/* LEFT */}
           <div className="flex items-center gap-2">
-            {/* MOBILE */}
+            
+            {/* MOBILE TITLE */}
             <h1 className="block md:hidden text-[#006c49] font-black text-3xl tracking-tight">
               Track<span className="text-[#161d19]">r</span>
             </h1>
 
-            {/* DESKTOP */}
+            {/* DESKTOP TITLE */}
             <h1 className="hidden md:block text-2xl font-bold capitalize text-[#161d19]">
-              Dashboard
+              {activeTab === "dashboard"
+                ? "Dashboard"
+                : activeTab}
             </h1>
           </div>
 
           {/* RIGHT */}
           <div className="flex items-center gap-4">
+            
+            {/* NOTIFICATION */}
             <button>
               <span className="material-symbols-outlined text-[28px] text-[#161d19]">
                 notifications
               </span>
             </button>
 
+            {/* PROFILE */}
             <div className="w-11 h-11 rounded-full overflow-hidden border-[3px] border-black">
               <img
                 src="https://i.pravatar.cc/100"
@@ -131,11 +196,10 @@ const DashboardLayout = () => {
         </div>
       </main>
 
-      {/* MOBILE BOTTOM NAV */}
+      {/* MOBILE NAV */}
       <MobileBottomNav
-        navItems={navItems}
+        navItems={mobileNavItems}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
         navigate={navigate}
       />
     </div>

@@ -1,27 +1,32 @@
 import React from "react";
 
-const MobileBottomNav = ({ navItems, activeTab, setActiveTab, navigate }) => {
+const MobileBottomNav = ({
+  navItems,
+  activeTab,
+  navigate,
+}) => {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 w-full h-16 bg-[#f4fbf4] border-t border-[#bbcabf] flex justify-around items-center z-50">
+   <nav className="md:hidden fixed bottom-0 left-2 right-2 h-20 bg-[#eef6ee] border border-[#dde4dd] rounded-t-2xl overflow-hidden flex items-center justify-around px-2 z-50">
       {navItems.map((item) => {
         const isActive = activeTab === item.id;
 
         return (
           <button
             key={item.id}
-            onClick={() => {
-              setActiveTab(item.id);
-              navigate(item.path);
-            }}
-            className={`flex flex-col items-center justify-center text-xs transition-all ${
-              isActive ? "text-[#006c49]" : "text-[#161d19]"
+            onClick={() => navigate(item.path)}
+            className={`flex flex-col items-center justify-center gap-1 transition-all ${
+              isActive
+                ? "text-[#006c49]"
+                : "text-[#3c4a42]"
             }`}
           >
             <span className="material-symbols-outlined text-[26px]">
               {item.icon}
             </span>
 
-            <span className="mt-1">{item.label}</span>
+            <span className="text-[12px] font-medium">
+              {item.label}
+            </span>
           </button>
         );
       })}
