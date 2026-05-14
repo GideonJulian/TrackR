@@ -131,7 +131,7 @@ const AuthForm = ({ activeTab, setActiveTab }) => {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:4000/api/v1/users/login",
+        "https://trackr-zpcz.onrender.com/api/v1/users/login",
         {
           method: "POST",
           headers: {
@@ -215,7 +215,7 @@ const AuthForm = ({ activeTab, setActiveTab }) => {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:4000/api/v1/users/register",
+        "https://trackr-zpcz.onrender.com/api/v1/users/register",
         {
           method: "POST",
           headers: {
@@ -283,7 +283,7 @@ const AuthForm = ({ activeTab, setActiveTab }) => {
    */
   const handleLinkedInLogin = () => {
     window.location.href =
-      "http://localhost:4000/api/v1/auth/linkedin";
+      "https://trackr-zpcz.onrender.com/api/v1/auth/linkedin";
   };
 
   return (
