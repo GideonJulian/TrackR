@@ -60,7 +60,7 @@ const DashboardHome = () => {
           <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full sm:w-auto">
             
             <button
-              onClick={() => navigate("/dashboard/applications")}
+              onClick={() => navigate("/dashboard/add-job")}
               className="h-12 px-6 rounded-xl bg-[#006c49] hover:bg-[#00563a] text-white font-semibold transition-all"
             >
               Add Your First Job

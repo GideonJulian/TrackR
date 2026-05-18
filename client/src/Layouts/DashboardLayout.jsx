@@ -85,8 +85,8 @@ const DashboardLayout = () => {
     },
     {
       id: "interviews",
-      label: "Add Job",
-      icon: "add_box",
+      label: "Interviews",
+      icon: "event",
       path: "/dashboard/interviews",
     },
     {

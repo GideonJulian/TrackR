@@ -7,6 +7,7 @@ import DashboardLayout from "./Layouts/DashboardLayout";
 import DashboardHome from "./pages/dashboard/DashboardHome";
 import Application from "./pages/dashboard/Application";
 import Interviews from "./pages/dashboard/Interviews";
+import AddJob from "./pages/dashboard/AddJob";
 const App = () => {
   const route = createBrowserRouter([
     {
@@ -41,6 +42,10 @@ const App = () => {
           path: "interviews",
           element: <Interviews />,
         },
+        {
+          path: 'add-job',
+          element: <AddJob />
+        }
       ],
     },
   ]);
