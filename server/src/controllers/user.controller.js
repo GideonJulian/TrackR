@@ -84,7 +84,7 @@ const loginUser = async (req, res) => {
                 name: user.name,
             },
         });
-   
+
 
     } catch (error) {
         console.log('Error logging in user:', error);
