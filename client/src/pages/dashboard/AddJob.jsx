@@ -122,8 +122,8 @@ export default function AddJob({ onSubmit }) {
        * API REQUEST
        */
       const response = await fetch(
-        "http://localhost:4000/api/v1/jobs",
-        // "https://trackr-zpcz.onrender.com/api/v1/jobs",
+        // "http://localhost:4000/api/v1/jobs",
+        "https://trackr-zpcz.onrender.com/api/v1/jobs",
         {
           method: "POST",
 
