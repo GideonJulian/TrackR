@@ -1,5 +1,5 @@
 import { User } from '../models/user.model.js';
-
+import jwt from "jsonwebtoken";
 const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -26,15 +26,23 @@ const registerUser = async (req, res) => {
             email,
             password
         })
-        res.status(201).json({
+
+        const token = jwt.sign(
+            { id: user._id },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "7d",
+            }
+        );
+        return res.status(201).json({
             message: "Registeration Successful!",
+            token,
             user: {
                 _id: user._id,
-                email,
-                name
-
-            }
-        })
+                email: user.email,
+                name: user.name,
+            },
+        });
     } catch (error) {
         console.log('Error registering user:', error);
         res.status(500).json({
@@ -61,15 +69,23 @@ const loginUser = async (req, res) => {
                 message: "Invalid credentials"
             });
         }
+        const token = jwt.sign(
+            { id: user._id },
+            process.env.JWT_SECRET,
+            { expiresIn: "7d" }
+        );
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Login successful..",
+            token,
             user: {
                 _id: user._id,
                 email: user.email,
-                name: user.name
-            }
+                name: user.name,
+            },
         });
+   
+
     } catch (error) {
         console.log('Error logging in user:', error);
         res.status(500).json({
@@ -77,7 +93,13 @@ const loginUser = async (req, res) => {
         });
     }
 }
+
+export const getCurrentUser = async (req, res) => {
+    res.status(200).json({
+        user: req.user
+    })
+}
 export {
-    registerUser, 
+    registerUser,
     loginUser
 }

@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import userRouter from "./routes/user.route.js";
+import jobRouter from "./routes/job.route.js";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(
 
 // routes
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/jobs", jobRouter);
 
 // health check
 app.get("/", (req, res) => {

@@ -1,169 +1,385 @@
 import React, { useState } from "react";
 
 /**
- * AddJob component is API-agnostic.
- * Pass onSubmit to connect any backend/API layer.
- * You can later replace or extend submitJob() with real API calls.
+ * SUCCESS / ERROR POPUP
  */
+const StatusPopup = ({ show, type, message }) => {
+  if (!show) return null;
+
+  return (
+    <div className="fixed top-6 right-6 z-[100] animate-[fadeIn_.3s_ease]">
+      <div
+        className={`min-w-[320px] rounded-2xl shadow-2xl border px-5 py-4 backdrop-blur-xl flex items-start gap-4 ${
+          type === "success"
+            ? "bg-[#e8fff1] border-[#70d69d]"
+            : "bg-[#fff0f0] border-[#ffb3b3]"
+        }`}
+      >
+        {/* ICON */}
+        <div
+          className={`w-11 h-11 rounded-full flex items-center justify-center ${
+            type === "success"
+              ? "bg-[#006c49] text-white"
+              : "bg-red-500 text-white"
+          }`}
+        >
+          <span className="material-symbols-outlined">
+            {type === "success" ? "check_circle" : "close"}
+          </span>
+        </div>
+
+        {/* CONTENT */}
+        <div className="flex-1">
+          <h3 className="font-bold text-[16px] text-[#161d19]">
+            {type === "success" ? "Success" : "Error"}
+          </h3>
+
+          <p className="text-[14px] text-[#3c4a42] mt-1">{message}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function AddJob({ onSubmit }) {
-  const [form, setForm] = useState({
-    companyName: "",
-    role: "",
-    notes: "",
-    status: "Applied",
-    dateApplied: "",
+  /**
+   * LOADING
+   */
+  const [loading, setLoading] = useState(false);
+
+  /**
+   * POPUP
+   */
+  const [popup, setPopup] = useState({
+    show: false,
+    type: "success",
+    message: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  /**
+   * FORM STATE
+   */
+  const [form, setForm] = useState({
+    company: "",
+    role: "",
+    status: "Applied",
+    location: "",
+    salary: "",
+    jobLink: "",
+    notes: "",
+  });
+
+  /**
+   * SHOW POPUP
+   */
+  const showPopup = (message, type = "success") => {
+    setPopup({
+      show: true,
+      type,
+      message,
+    });
+
+    setTimeout(() => {
+      setPopup({
+        show: false,
+        type: "success",
+        message: "",
+      });
+    }, 3000);
   };
 
+  /**
+   * HANDLE INPUTS
+   */
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  /**
+   * SUBMIT JOB
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const payload = {
-      ...form,
-      createdAt: new Date().toISOString(),
-    };
+    try {
+      setLoading(true);
 
-    if (onSubmit) {
-      await onSubmit(payload);
-    } else {
-      // fallback API hook (replace anytime)
-      await submitJob(payload);
+      /**
+       * GET TOKEN
+       */
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Please login first");
+      }
+
+      /**
+       * API REQUEST
+       */
+      const response = await fetch(
+        "http://localhost:4000/api/v1/jobs",
+        // "https://trackr-zpcz.onrender.com/api/v1/jobs",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMGQ5NTY0ZTIzYzdlYzk1NDYzNDA3ZCIsImlhdCI6MTc3OTI3NTEwOCwiZXhwIjoxNzc5ODc5OTA4fQ.EKytyB3uMZWhr1UlQz8im858ihQQbaiCg94vSOx4g5A`,
+            // Authorization: `Bearer ${token}`,
+          },
+
+          body: JSON.stringify(form),
+        },
+      );
+
+      const data = await response.json();
+
+      console.log(data);
+
+      /**
+       * ERROR
+       */
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      /**
+       * SUCCESS POPUP
+       */
+      showPopup("Job added successfully", "success");
+
+      /**
+       * RESET FORM
+       */
+      setForm({
+        company: "",
+        role: "",
+        status: "Applied",
+        location: "",
+        salary: "",
+        jobLink: "",
+        notes: "",
+      });
+
+      /**
+       * OPTIONAL CALLBACK
+       */
+      if (onSubmit) {
+        onSubmit(data);
+      }
+    } catch (error) {
+      console.log(error);
+
+      showPopup(error.message || "Something went wrong", "error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-gutter pt-xxl">
-      <div className="flex flex-col space-y-xl">
-        {/* Title Section */}
-        <div className="border-b border-[#bbcabf] pb-[64px]">
-          <h3 className="heading-serif text-[48px] leading-[1.2] tracking-[0.02rem] font-bold text-[#006c49]">
+    <div className="w-full pt-8 pb-24">
+      {/* STATUS POPUP */}
+      <StatusPopup
+        show={popup.show}
+        type={popup.type}
+        message={popup.message}
+      />
+
+      <div className="flex flex-col space-y-8">
+        {/* HEADER */}
+        <div className="border-b border-[#bbcabf] pb-8">
+          <h2 className="text-[38px] md:text-[48px] leading-[1.1] font-black text-[#006c49] tracking-tight">
             New Career Opportunity
-          </h3>
-          <p className="font-body-md text-[15px] leading-[1.5] font-[400] text-[#3c4a42] mt-[8px]">
-            Enter the details of the position you're tracking to keep your
-            career pipeline organized.
+          </h2>
+
+          <p className="text-[15px] md:text-[16px] text-[#3c4a42] mt-3 max-w-2xl">
+            Track a new application and manage your career journey smarter with
+            Trackr.
           </p>
         </div>
 
-        {/* Form */}
+        {/* FORM */}
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-12 gap-[32px]"
+          className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-6 items-start"
         >
-          {/* Left Column */}
-          <div className="md:col-span-8 flex flex-col space-y-[32px]">
-            <div className="bg-[white] border border-[#bbcabf] p-[32px] rounded-xl">
-              <label className="block font-label-sm text-[13px] leading-[1.4] tracking-[0.01rem] font-[500]  text-[#3c4a42] mb-[4px]">
+          {/* LEFT SIDE */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* COMPANY */}
+            <div className="bg-white border border-[#d8e2da] p-6 rounded-lg shadow-sm">
+              <label className="block text-[13px] font-semibold text-[#3c4a42] mb-3">
                 Company Name
               </label>
+
               <input
-                name="companyName"
-                value={form.companyName}
+                name="company"
+                value={form.company}
                 onChange={handleChange}
-                className="w-full bg-white border border-[#bbcabf] focus:border-primary px-[16px] py-[8px] text-[18px] font-body-lg outline-none transition-colors rounded"
-                placeholder="e.g. Acme Corp"
                 type="text"
+                required
+                placeholder="e.g Google"
+                className="w-full bg-[#f8fbf8] border border-[#c7d4ca] px-4 py-3 rounded-lg outline-none focus:border-[#006c49] focus:ring-4 focus:ring-[#006c4920] transition-all"
               />
             </div>
 
-            <div className="bg-white border border-[#bbcabf] p-[32px] rounded-xl flex-1">
-              <label className="block font-label-sm text-[13px] leading-[1.4] tracking-[0.01rem] font-[500]  text-[#3c4a42] mb-[4px]">
+            {/* ROLE */}
+            <div className="bg-white border border-[#d8e2da] p-6 rounded-lg shadow-sm">
+              <label className="block text-[13px] font-semibold text-[#3c4a42] mb-3">
                 Role / Position
               </label>
+
               <input
                 name="role"
                 value={form.role}
                 onChange={handleChange}
-                className="w-full bg-white border border-[#bbcabf] focus:border-primary px-[16px] py-[8px] text-[18px] font-body-lg outline-none transition-colors rounded"
-                placeholder="e.g. Senior Frontend Engineer"
                 type="text"
+                required
+                placeholder="Frontend Developer"
+                className="w-full bg-[#f8fbf8] border border-[#c7d4ca] px-4 py-3 rounded-lg outline-none focus:border-[#006c49] focus:ring-4 focus:ring-[#006c4920] transition-all"
               />
             </div>
 
-            <div className=" bg-white border border-[#bbcabf]  p-[32px] rounded-xl flex-1">
-              <label className="block font-label-sm text-[13px] leading-[1.4] tracking-[0.01rem] font-[500]  text-[#3c4a42] mb-[4px]">
+            {/* LOCATION */}
+            <div className="bg-white border border-[#d8e2da] p-6 rounded-lg shadow-sm">
+              <label className="block text-[13px] font-semibold text-[#3c4a42] mb-3">
+                Location
+              </label>
+
+              <input
+                name="location"
+                value={form.location}
+                onChange={handleChange}
+                type="text"
+                placeholder="Remote, Lagos, London..."
+                className="w-full bg-[#f8fbf8] border border-[#c7d4ca] px-4 py-3 rounded-lg outline-none focus:border-[#006c49] focus:ring-4 focus:ring-[#006c4920] transition-all"
+              />
+            </div>
+
+            {/* SALARY */}
+            <div className="bg-white border border-[#d8e2da] p-6 rounded-lg shadow-sm">
+              <label className="block text-[13px] font-semibold text-[#3c4a42] mb-3">
+                Salary
+              </label>
+
+              <input
+                name="salary"
+                value={form.salary}
+                onChange={handleChange}
+                type="text"
+                placeholder="$80k - $120k"
+                className="w-full bg-[#f8fbf8] border border-[#c7d4ca] px-4 py-3 rounded-lg outline-none focus:border-[#006c49] focus:ring-4 focus:ring-[#006c4920] transition-all"
+              />
+            </div>
+
+            {/* JOB LINK */}
+            <div className="bg-white border border-[#d8e2da] p-6 rounded-lg shadow-sm lg:col-span-2">
+              <label className="block text-[13px] font-semibold text-[#3c4a42] mb-3">
+                Job Link
+              </label>
+
+              <input
+                name="jobLink"
+                value={form.jobLink}
+                onChange={handleChange}
+                type="url"
+                placeholder="https://..."
+                className="w-full bg-[#f8fbf8] border border-[#c7d4ca] px-4 py-3 rounded-lg outline-none focus:border-[#006c49] focus:ring-4 focus:ring-[#006c4920] transition-all"
+              />
+            </div>
+
+            {/* NOTES */}
+            <div className="bg-white border border-[#d8e2da] p-6 rounded-lg shadow-sm lg:col-span-2">
+              <label className="block text-[13px] font-semibold text-[#3c4a42] mb-3">
                 Notes & Details
               </label>
+
               <textarea
                 name="notes"
                 value={form.notes}
                 onChange={handleChange}
-                className="w-full h-64 bg-[#f4fbf4] border border-[#bbcabf] focus:border-primary px-[16px] py-[8px] text-[15px] font-body-md outline-none transition-colors resize-none rounded"
-                placeholder="Add any specific requirements, recruiter names, or interview prep thoughts..."
+                placeholder="Interview notes, recruiter info..."
+                className="w-full h-44 bg-[#f8fbf8] border border-[#c7d4ca] px-4 py-3 rounded-lg outline-none resize-none focus:border-[#006c49] focus:ring-4 focus:ring-[#006c4920] transition-all"
               />
             </div>
-          </div>
 
-          {/* Right Column */}
-          <div className="md:col-span-4 flex flex-col space-y-[32px]">
-            <div className="bg-[#e8f0e9] border border-[#bbcabf] p-[32px] rounded-xl">
-              <label className="block font-label-sm text-[13px] leading-[1.4] tracking-[0.01rem] font-[500]  text-[#3c4a42] mb-[4px]">
-                Application Status
-              </label>
-
-              {["Applied", "Interviewing", "Offer", "Rejected"].map((s) => (
-                <label
-                  key={s}
-                  className="flex items-center space-x-[16px] p-[8px] hover:bg-[#dde4dd] rounded-lg cursor-pointer transition-colors"
-                >
-                  <input
-                    type="radio"
-                    name="status"
-                    value={s}
-                    checked={form.status === s}
-                    onChange={handleChange}
-                    className="w-4 h-4 text-primary focus:ring-primary border-outline"
-                  />
-                  <span className="font-body-md text-body-md">{s}</span>
-                </label>
-              ))}
-            </div>
-
-            <div className="bg-[#e8f0e9] border border-[#bbcabf] p-[32px] rounded-xl">
-              <label className="block font-label-sm text-[13px] leading-[1.4] tracking-[0.01rem] font-[500]  text-[#3c4a42] mb-[16px]">
-                Date Applied
-              </label>
-              <input
-                name="dateApplied"
-                value={form.dateApplied}
-                onChange={handleChange}
-                className="w-full bg-[#f4fbf4] border border-[#bbcabf] focus:border-primary px-[16px] py-[8px] text-[15px] font-body-md outline-none transition-colors rounded"
-                type="date"
-              />
-            </div>
-            <div className="bg-[#b7ebce] p-[32px] rounded-xl text-[#3c6c54]">
-              <div className="flex items-start space-x-[8px]">
-                <span className="material-symbols-outlined text-[#376850] text-[20px]">
-                  info
+            {/* INFO CARD */}
+            <div className="bg-[#dff5e7] border border-[#b6dfc2] p-6 rounded-lg lg:col-span-2">
+              <div className="flex items-start gap-3">
+                <span className="material-symbols-outlined text-[#006c49]">
+                  tips_and_updates
                 </span>
-                <p className="font-label-sm text-[13px] leading-[1.4] tracking-[0.01rem]">
-                  Trackr will automatically calculate follow-up dates based on
-                  your application timeline.
+
+                <p className="text-[14px] leading-[1.6] text-[#376850]">
+                  Keep your applications updated regularly so Trackr can help
+                  you monitor progress.
                 </p>
               </div>
             </div>
+          </div>
 
-            <div className="mt-auto pt-[64px]">
+          {/* RIGHT SIDE */}
+          <div className="flex flex-col gap-6 lg:sticky lg:top-24">
+            <div className="bg-[#eef6ee] border border-[#d8e2da] p-6 rounded-lg">
+              <label className="block text-[13px] font-semibold text-[#3c4a42] mb-4">
+                Application Status
+              </label>
+
+              <div className="grid grid-cols-1 gap-3">
+                {["Applied", "Interview", "Offer", "Rejected"].map((s) => (
+                  <label
+                    key={s}
+                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#dde4dd] transition-all cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name="status"
+                      value={s}
+                      checked={form.status === s}
+                      onChange={handleChange}
+                    />
+
+                    <span className="font-medium text-[#161d19]">{s}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* BUTTONS */}
+            <div className="flex flex-col gap-4">
+              {/* SAVE */}
               <button
-                className="w-full bg-[#006c49] text-white py-[16px] rounded-xl font-semibold hover:bg-opacity-90 transition-all flex items-center justify-center space-x-[8px] shadow-lg shadow-[#006c4933]"
                 type="submit"
+                disabled={loading}
+                className={`w-full py-4 rounded-lg font-bold transition-all flex items-center justify-center gap-3 shadow-lg ${
+                  loading
+                    ? "bg-gray-300 text-black cursor-not-allowed"
+                    : "bg-[#006c49] text-white hover:bg-[#00563b]"
+                }`}
               >
-                <span className="font-label-sm text-label-sm">
-                  Save Application
-                </span>
-                <span class="material-symbols-outlined text-[16px]">
-                  check_circle
-                </span>
+                {loading ? (
+                  <>
+                    <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    Save Application
+                    <span className="material-symbols-outlined text-[20px]">
+                      check_circle
+                    </span>
+                  </>
+                )}
               </button>
 
+              {/* CANCEL */}
               <button
-                className="w-full bg-transparent text-on-surface-variant py-[16px] rounded-xl font-semibold mt-[16px] hover:bg-surface-container-high transition-all border border-outline-variant"
                 type="button"
+                className="w-full border border-[#c7d4ca] py-4 rounded-lg font-semibold hover:bg-[#eef6ee] transition-all"
               >
                 Cancel
               </button>
@@ -173,18 +389,4 @@ export default function AddJob({ onSubmit }) {
       </div>
     </div>
   );
-}
-
-/**
- * API-ready placeholder function.
- * Replace with fetch/axios/service layer anytime.
- */
-async function submitJob(data) {
-  console.log("Submitting job:", data);
-  // Example:
-  // return fetch('/api/jobs', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify(data)
-  // });
 }
