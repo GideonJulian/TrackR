@@ -297,6 +297,67 @@ const DashboardHome = () => {
       )}
 
       <div className="md:hidden">
+        {!hasApplications ? (
+          <section className="rounded-3xl border border-[#dde4dd] bg-white p-6 text-center">
+            <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-[#eef6ee]">
+              <span className="material-symbols-outlined text-[48px] text-[#006c49]">
+                work
+              </span>
+            </div>
+
+            <h2 className="text-3xl font-bold text-[#161d19]">
+              No applications yet
+            </h2>
+
+            <p className="mx-auto mt-3 max-w-sm text-[16px] leading-7 text-[#3c4a42]">
+              Start tracking your job applications, interviews, and offers in
+              one clean workspace.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3">
+              <button
+                onClick={() => navigate("/dashboard/add-job")}
+                className="h-12 rounded-xl bg-[#006c49] px-6 font-semibold text-white transition-all hover:bg-[#00563a]"
+              >
+                Add Your First Job
+              </button>
+
+              <button
+                onClick={() => navigate("/dashboard/profile")}
+                className="h-12 rounded-xl border border-[#bbcabf] px-6 font-semibold text-[#161d19] transition-all hover:bg-[#f4fbf4]"
+              >
+                Setup Profile
+              </button>
+            </div>
+
+            <div className="mt-8 grid grid-cols-1 gap-3 text-left">
+              <div className="rounded-2xl border border-[#dde4dd] bg-[#f8fbf8] p-4">
+                <span className="material-symbols-outlined text-[28px] text-[#006c49]">
+                  task_alt
+                </span>
+                <h3 className="mt-2 font-bold text-[#161d19]">
+                  Track Applications
+                </h3>
+                <p className="mt-1 text-sm leading-6 text-[#3c4a42]">
+                  Organize every role you apply for.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-[#dde4dd] bg-[#f8fbf8] p-4">
+                <span className="material-symbols-outlined text-[28px] text-[#006c49]">
+                  event_available
+                </span>
+                <h3 className="mt-2 font-bold text-[#161d19]">
+                  Manage Interviews
+                </h3>
+                <p className="mt-1 text-sm leading-6 text-[#3c4a42]">
+                  Keep upcoming interview stages in view.
+                </p>
+              </div>
+            </div>
+          </section>
+        ) : (
+          <>
         <section className="space-y-4">
           <div className="flex items-end justify-between">
             <h2 className="text-2xl font-bold leading-tight text-[#161d19]">
@@ -499,6 +560,8 @@ const DashboardHome = () => {
         >
           <span className="material-symbols-outlined text-[28px]">add</span>
         </button>
+          </>
+        )}
       </div>
 
       <div className="hidden md:block">
