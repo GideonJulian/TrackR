@@ -8,6 +8,89 @@ const emptyForm = {
   bio: "",
 };
 
+const SkeletonBlock = ({ className = "" }) => (
+  <div className={`animate-pulse rounded-lg bg-[#dde4dd] ${className}`} />
+);
+
+const ProfileLoading = () => (
+  <div className="mx-auto w-full max-w-5xl">
+    <header className="mb-10">
+      <SkeletonBlock className="h-10 w-72 md:h-12 md:w-96" />
+      <SkeletonBlock className="mt-3 h-5 w-full max-w-xl" />
+    </header>
+
+    <section className="space-y-10">
+      <div className="grid grid-cols-1 gap-8 border-t border-[#bbcabf] pt-8 md:grid-cols-3">
+        <div>
+          <SkeletonBlock className="h-6 w-44" />
+          <SkeletonBlock className="mt-3 h-4 w-full" />
+          <SkeletonBlock className="mt-2 h-4 w-4/5" />
+          <SkeletonBlock className="mt-2 h-4 w-3/5" />
+        </div>
+
+        <div className="space-y-6 md:col-span-2">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+            <SkeletonBlock className="h-24 w-24 shrink-0" />
+            <div className="space-y-3">
+              <SkeletonBlock className="h-10 w-36" />
+              <SkeletonBlock className="h-4 w-48" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <SkeletonBlock className="h-4 w-24" />
+              <SkeletonBlock className="h-12 w-full" />
+            </div>
+            <div className="space-y-2">
+              <SkeletonBlock className="h-4 w-28" />
+              <SkeletonBlock className="h-12 w-full" />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <SkeletonBlock className="h-4 w-32" />
+            <SkeletonBlock className="h-32 w-full" />
+          </div>
+
+          <div className="flex justify-end">
+            <SkeletonBlock className="h-10 w-32" />
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-8 border-t border-[#bbcabf] pt-8 md:grid-cols-3">
+        <div>
+          <SkeletonBlock className="h-6 w-40" />
+          <SkeletonBlock className="mt-3 h-4 w-full" />
+          <SkeletonBlock className="mt-2 h-4 w-3/4" />
+        </div>
+
+        <div className="md:col-span-2">
+          <div className="flex flex-col gap-4 rounded-lg border border-[#bbcabf] bg-white p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <SkeletonBlock className="h-7 w-7 shrink-0 rounded-full" />
+              <div className="space-y-2">
+                <SkeletonBlock className="h-5 w-36" />
+                <SkeletonBlock className="h-4 w-56" />
+              </div>
+            </div>
+            <SkeletonBlock className="h-10 w-24" />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-4 border-t border-[#bbcabf] pb-6 pt-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-2">
+          <SkeletonBlock className="h-5 w-32" />
+          <SkeletonBlock className="h-4 w-full max-w-lg" />
+        </div>
+        <SkeletonBlock className="h-10 w-32" />
+      </div>
+    </section>
+  </div>
+);
+
 const Profile = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -180,6 +263,10 @@ const Profile = () => {
     }
   };
 
+  if (loading) {
+    return <ProfileLoading />;
+  }
+
   return (
     <div className="mx-auto w-full max-w-5xl">
       <header className="mb-10">
@@ -207,12 +294,6 @@ const Profile = () => {
           </div>
 
           <div className="md:col-span-2 space-y-6">
-            {loading && (
-              <p className="rounded-lg border border-[#bbcabf] bg-white p-4 text-sm text-[#3c4a42]">
-                Loading profile...
-              </p>
-            )}
-
             {error && (
               <p className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600">
                 {error}
