@@ -1,4 +1,3 @@
-import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Layouts from "./Layouts/Layouts";
@@ -8,6 +7,9 @@ import DashboardHome from "./pages/dashboard/DashboardHome";
 import Application from "./pages/dashboard/Application";
 import Interviews from "./pages/dashboard/Interviews";
 import AddJob from "./pages/dashboard/AddJob";
+import Resume from "./pages/dashboard/Resume";
+import Profile from "./pages/dashboard/Profile";
+
 const App = () => {
   const route = createBrowserRouter([
     {
@@ -43,9 +45,17 @@ const App = () => {
           element: <Interviews />,
         },
         {
-          path: 'add-job',
-          element: <AddJob />
-        }
+          path: "add-job",
+          element: <AddJob />,
+        },
+        {
+          path: "resumes",
+          element: <Resume />,
+        },
+        {
+          path: "profile",
+          element: <Profile />,
+        },
       ],
     },
   ]);

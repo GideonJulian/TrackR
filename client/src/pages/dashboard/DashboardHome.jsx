@@ -1,13 +1,46 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const DashboardHome = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [userLoading, setUserLoading] = useState(true);
+  const [userError, setUserError] = useState("");
 
-  /**
-   * MOCK STATE
-   * later replace with real API data
-   */
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          throw new Error("Please login first");
+        }
+
+        const response = await fetch("http://localhost:4000/api/v1/user/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Unable to fetch user data");
+        }
+
+        setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
+      } catch (error) {
+        setUserError(error.message || "Unable to fetch user data");
+      } finally {
+        setUserLoading(false);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  const firstName = user?.name?.split(" ")[0] || "there";
   const hasApplications = false;
 
   return (
@@ -15,11 +48,11 @@ const DashboardHome = () => {
       {/* DESKTOP HERO */}
       <div className="hidden md:block">
         <h1 className="text-[45px] leading-[1.1] tracking-[0.02rem] font-bold font-display text-[#161d19]">
-          Welcome back, Gideon!
+          {userLoading ? "Welcome back..." : `Welcome back, ${firstName}!`}
         </h1>
 
         <p className="text-[18px] leading-[1.6] font-normal font-body-lg text-[#3c4a42] mt-1">
-          Here's what's happening with your applications today.
+          Here's what's happening with your applications today.{" "}
         </p>
       </div>
 
@@ -37,7 +70,6 @@ const DashboardHome = () => {
       {/* EMPTY STATE */}
       {!hasApplications && (
         <div className="mt-10 bg-white border border-[#dde4dd] rounded-3xl p-8 md:p-12 flex flex-col items-center text-center">
-          
           {/* ICON */}
           <div className="w-24 h-24 rounded-3xl bg-[#eef6ee] flex items-center justify-center mb-6">
             <span className="material-symbols-outlined text-[#006c49] text-[48px]">
@@ -52,13 +84,12 @@ const DashboardHome = () => {
 
           {/* TEXT */}
           <p className="max-w-md mt-3 text-[#3c4a42] text-[16px] leading-7">
-            Start tracking your job applications, interviews,
-            and offers in one clean workspace.
+            Start tracking your job applications, interviews, and offers in one
+            clean workspace.
           </p>
 
           {/* BUTTONS */}
           <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full sm:w-auto">
-            
             <button
               onClick={() => navigate("/dashboard/add-job")}
               className="h-12 px-6 rounded-xl bg-[#006c49] hover:bg-[#00563a] text-white font-semibold transition-all"
@@ -67,16 +98,15 @@ const DashboardHome = () => {
             </button>
 
             <button
+              onClick={() => navigate("/dashboard/profile")}
               className="h-12 px-6 rounded-xl border border-[#bbcabf] hover:bg-[#f4fbf4] text-[#161d19] font-semibold transition-all"
             >
               Setup Profile
             </button>
-
           </div>
 
           {/* SMALL INFO */}
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-            
             <div className="border border-[#dde4dd] rounded-2xl p-5 bg-[#f8fbf8]">
               <span className="material-symbols-outlined text-[#006c49] text-[30px]">
                 task_alt
@@ -110,15 +140,12 @@ const DashboardHome = () => {
                 insights
               </span>
 
-              <h3 className="font-bold mt-3 text-[#161d19]">
-                See Progress
-              </h3>
+              <h3 className="font-bold mt-3 text-[#161d19]">See Progress</h3>
 
               <p className="text-sm text-[#3c4a42] mt-1">
                 Visualize your job search journey easily.
               </p>
             </div>
-
           </div>
         </div>
       )}
