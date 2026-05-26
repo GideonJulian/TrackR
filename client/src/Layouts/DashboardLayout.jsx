@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import {
   useNavigate,
   Outlet,
@@ -10,6 +10,42 @@ import MobileBottomNav from "../components/Dashboard/MobileBottomNav";
 const DashboardLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [profilePicture, setProfilePicture] = useState("");
+
+  useEffect(() => {
+    const loadUserProfilePicture = async () => {
+      const savedUser = JSON.parse(localStorage.getItem("user") || "null");
+      setProfilePicture(savedUser?.profilePicture || "");
+
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      try {
+        const response = await fetch("http://localhost:4000/api/v1/user/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) return;
+
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setProfilePicture(data.user?.profilePicture || "");
+      } catch (error) {
+        console.log("Error fetching profile picture:", error);
+      }
+    };
+
+    loadUserProfilePicture();
+    window.addEventListener("user-updated", loadUserProfilePicture);
+
+    return () => {
+      window.removeEventListener("user-updated", loadUserProfilePicture);
+    };
+  }, []);
 
   /**
    * ACTIVE TAB FROM URL
@@ -180,12 +216,14 @@ const DashboardLayout = () => {
             </button>
 
             {/* PROFILE */}
-            <div className="w-11 h-11 rounded-full overflow-hidden border-[3px] border-black">
-              <img
-                src="https://i.pravatar.cc/100"
-                alt="profile"
-                className="w-full h-full object-cover"
-              />
+            <div className="w-11 h-11 rounded-full overflow-hidden border-[3px] border-black bg-white">
+              {profilePicture && (
+                <img
+                  src={profilePicture}
+                  alt="profile"
+                  className="w-full h-full object-cover"
+                />
+              )}
             </div>
           </div>
         </header>

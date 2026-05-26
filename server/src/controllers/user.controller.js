@@ -110,6 +110,49 @@ export const getCurrentUser = async (req, res) => {
     });
  }
 }
+
+export const updateCurrentUser = async (req, res) => {
+ try {
+   const { name, email, profilePicture, bio } = req.body;
+
+   const user = await User.findById(req.user.id);
+
+   if (!user) {
+    return res.status(404).json({
+        message: "User not found"
+    })
+   }
+
+   if (email && email.toLowerCase() !== user.email) {
+    const existing = await User.findOne({ email: email.toLowerCase() });
+
+    if (existing) {
+        return res.status(400).json({
+            message: "Email already in use"
+        })
+    }
+   }
+
+   user.name = name || user.name;
+   user.email = email ? email.toLowerCase() : user.email;
+   user.profilePicture = profilePicture ?? user.profilePicture;
+   user.bio = bio ?? user.bio;
+
+   const updatedUser = await user.save();
+   const safeUser = updatedUser.toObject();
+   delete safeUser.password;
+
+   return res.status(200).json({
+    message: "Profile updated successfully",
+    user: safeUser,
+   });
+ } catch (error) {
+    console.log('Error updating user:', error);
+    res.status(500).json({
+        message: "Internal Server Error",
+    });
+ }
+}
 export {
     registerUser,
     loginUser
