@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  useNavigate,
-  Outlet,
-  useLocation,
-} from "react-router-dom";
+import { useNavigate, Outlet, useLocation } from "react-router-dom";
 
 import MobileBottomNav from "../components/Dashboard/MobileBottomNav";
 
@@ -55,6 +51,10 @@ const DashboardLayout = () => {
       return "dashboard";
     }
 
+    if (location.pathname.includes("/add-job")) {
+      return "add-job";
+    }
+
     if (location.pathname.includes("/applications")) {
       return "applications";
     }
@@ -65,6 +65,10 @@ const DashboardLayout = () => {
 
     if (location.pathname.includes("/resumes")) {
       return "resumes";
+    }
+
+    if (location.pathname.includes("/profile")) {
+      return "profile";
     }
 
     return "dashboard";
@@ -90,37 +94,6 @@ const DashboardLayout = () => {
     },
     {
       id: "interviews",
-      label: "Add Job",
-      icon: "add_box",
-      path: "/dashboard/interviews",
-    },
-    {
-      id: "resumes",
-      label: "Resume",
-      icon: "article",
-      path: "/dashboard/resumes",
-    },
-  ];
-
-  /**
-   * MOBILE NAV
-   * PROFILE REMOVED
-   */
-  const mobileNavItems = [
-    {
-      id: "dashboard",
-      label: "Home",
-      icon: "home",
-      path: "/dashboard",
-    },
-    {
-      id: "applications",
-      label: "Apps",
-      icon: "list_alt",
-      path: "/dashboard/applications",
-    },
-    {
-      id: "interviews",
       label: "Interviews",
       icon: "event",
       path: "/dashboard/interviews",
@@ -133,11 +106,41 @@ const DashboardLayout = () => {
     },
   ];
 
+  /**
+   * MOBILE NAV
+   */
+  const mobileNavItems = [
+    {
+      id: "dashboard",
+      label: "Home",
+      icon: "home",
+      path: "/dashboard",
+    },
+    {
+      id: "add-job",
+      label: "Add Job",
+      icon: "add_box",
+      path: "/dashboard/add-job",
+    },
+    {
+      id: "applications",
+      label: "Apps",
+      icon: "list_alt",
+      path: "/dashboard/applications",
+    },
+    {
+      id: "resumes",
+      label: "Resume",
+      icon: "article",
+      path: "/dashboard/resumes",
+    },
+
+  ];
+
   return (
     <div className="flex h-screen overflow-hidden bg-[#f4fbf4] text-[#161d19]">
       {/* DESKTOP SIDEBAR */}
       <aside className="hidden md:flex flex-col h-full w-60 bg-[#eef6ee] border-r border-[#bbcabf] p-4 space-y-4 fixed left-0 top-0">
-        
         {/* LOGO */}
         <div className="flex items-center gap-2 mb-8 px-2">
           <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm">
@@ -151,9 +154,7 @@ const DashboardLayout = () => {
               Track<span className="text-[#006c49]">R</span>
             </h1>
 
-            <p className="text-xs text-gray-500 font-medium">
-              Career Manager
-            </p>
+            <p className="text-xs text-gray-500 font-medium">Career Manager</p>
           </div>
         </div>
 
@@ -181,42 +182,49 @@ const DashboardLayout = () => {
             );
           })}
         </nav>
+
+        <div className="border-t border-[#bbcabf] pt-4">
+          <button
+            onClick={() => navigate("/dashboard/add-job")}
+            className="w-full flex items-center justify-center gap-2 rounded-lg bg-[#006c49] px-4 py-3 font-bold text-white shadow-md transition-all hover:bg-[#00563a] active:scale-[0.98]"
+          >
+            <span className="material-symbols-outlined text-[20px]">add</span>
+            <span>Add Job</span>
+          </button>
+        </div>
       </aside>
 
       {/* MAIN */}
       <main className="flex-1 ml-0 md:ml-60 overflow-y-auto pb-20 md:pb-0">
-        
         {/* HEADER */}
-       <header className="fixed top-0 left-0 md:left-60 right-0 z-40 flex justify-between items-center h-16 px-5 bg-[#eef6ee] border-b border-[#dde4dd]">
-          
+        <header className="fixed top-0 left-0 md:left-60 right-0 z-40 flex justify-between items-center h-16 px-5 bg-white md:bg-[#eef6ee] border-b border-[#dde4dd]">
           {/* LEFT */}
           <div className="flex items-center gap-2">
-              
             {/* MOBILE TITLE */}
-            <h1 className="block md:hidden text-[#006c49] font-black text-3xl tracking-tight">
+            <h1 className="block md:hidden text-[#006c49] font-black text-xl tracking-tight">
               Track<span className="text-[#161d19]">r</span>
             </h1>
 
             {/* DESKTOP TITLE */}
             <h1 className="hidden md:block text-2xl font-bold capitalize text-[#161d19]">
-              {activeTab === "dashboard"
-                ? "Dashboard"
-                : activeTab}
+              {activeTab === "dashboard" ? "Dashboard" : activeTab}
             </h1>
           </div>
 
           {/* RIGHT */}
           <div className="flex items-center gap-4">
-            
             {/* NOTIFICATION */}
-            <button>
-              <span className="material-symbols-outlined text-[28px] text-[#161d19]">
+            <button className="rounded-full p-2 transition-colors hover:bg-[#eef6ee]">
+              <span className="material-symbols-outlined text-[24px] text-[#3c4a42] md:text-[28px] md:text-[#161d19]">
                 notifications
               </span>
             </button>
 
             {/* PROFILE */}
-            <div className="w-11 h-11 rounded-full overflow-hidden border-[3px] border-black bg-white">
+            <div
+              onClick={() => navigate("/dashboard/profile")}
+              className="h-8 w-8 cursor-pointer overflow-hidden rounded-full border border-[#dde4dd] bg-white md:h-11 md:w-11 md:border-[3px] md:border-black"
+            >
               {profilePicture && (
                 <img
                   src={profilePicture}
@@ -229,7 +237,7 @@ const DashboardLayout = () => {
         </header>
 
         {/* PAGE CONTENT */}
-        <div className="p-6 pt-16">
+        <div className="px-4 pb-28 pt-20 md:p-6 md:pt-16">
           <Outlet />
         </div>
       </main>
