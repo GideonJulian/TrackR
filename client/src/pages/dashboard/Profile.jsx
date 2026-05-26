@@ -28,7 +28,7 @@ const Profile = () => {
           throw new Error("Please login first");
         }
 
-        const response = await fetch("http://localhost:4000/api/v1/user/me", {
+        const response = await fetch("https://trackr-zpcz.onrender.com/api/v1/user/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -101,7 +101,7 @@ const Profile = () => {
         throw new Error("Please login first");
       }
 
-      const response = await fetch("http://localhost:4000/api/v1/user/me", {
+      const response = await fetch("https://trackr-zpcz.onrender.com/api/v1/user/me", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -155,7 +155,7 @@ const Profile = () => {
         throw new Error("Please login first");
       }
 
-      const response = await fetch("http://localhost:4000/api/v1/user/delete", {
+      const response = await fetch("https://trackr-zpcz.onrender.com/api/v1/user/delete", {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
