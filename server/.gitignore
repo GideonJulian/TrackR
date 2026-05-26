@@ -1,8 +1,8 @@
-# .gitignore
-# Select templates from the left panel to generate your .gitignore
+.gitignore
+Select templates from the left panel to generate your .gitignore
 
-# Example patterns:
-# node_modules/
-# .env
-# dist/
-# *.log
+Example patterns:
+node_modules/
+.env
+dist/
+*.log
