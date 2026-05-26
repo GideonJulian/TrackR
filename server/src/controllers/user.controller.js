@@ -1,5 +1,6 @@
 import { User } from '../models/user.model.js';
-import jwt from "jsonwebtoken";
+import Job from "../models/job.model.js";
+import generateToken from "../utils/generateToken.js";
 const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -27,14 +28,9 @@ const registerUser = async (req, res) => {
             password
         })
 
-        const token = jwt.sign(
-            { id: user._id },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: "7d",
-            }
-        );
+        const token = generateToken(user._id);
         return res.status(201).json({
+            success: true,
             message: "Registeration Successful!",
             token,
             user: {
@@ -69,13 +65,10 @@ const loginUser = async (req, res) => {
                 message: "Invalid credentials"
             });
         }
-        const token = jwt.sign(
-            { id: user._id },
-            process.env.JWT_SECRET,
-            { expiresIn: "7d" }
-        );
+        const token = generateToken(user._id);
 
         return res.status(200).json({
+            success: true,
             message: "Login successful..",
             token,
             user: {
@@ -153,7 +146,37 @@ export const updateCurrentUser = async (req, res) => {
     });
  }
 }
+const deleteCurrentUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            })
+        }
+
+        const deletedJobs = await Job.deleteMany({
+            user: req.user.id
+        });
+
+        await User.findByIdAndDelete(req.user.id);
+
+        return res.status(200).json({
+            message: "User deleted successfully",
+            deletedJobs: deletedJobs.deletedCount
+        })
+    } catch (error) { 
+        console.log('Error deleting user:', error);
+        res.status(500).json({
+            message: "Internal Server Error",
+        });
+    }
+ }
+
+
+
 export {
     registerUser,
-    loginUser
+    loginUser,
+    deleteCurrentUser
 }

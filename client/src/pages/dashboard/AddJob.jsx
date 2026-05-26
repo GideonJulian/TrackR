@@ -129,8 +129,8 @@ export default function AddJob({ onSubmit }) {
 
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMGQ5NTY0ZTIzYzdlYzk1NDYzNDA3ZCIsImlhdCI6MTc3OTI3NTEwOCwiZXhwIjoxNzc5ODc5OTA4fQ.EKytyB3uMZWhr1UlQz8im858ihQQbaiCg94vSOx4g5A`,
-            // Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMGQ5NTY0ZTIzYzdlYzk1NDYzNDA3ZCIsImlhdCI6MTc3OTI3NTEwOCwiZXhwIjoxNzc5ODc5OTA4fQ.EKytyB3uMZWhr1UlQz8im858ihQQbaiCg94vSOx4g5A`,
+            Authorization: `Bearer ${token}`,
           },
 
           body: JSON.stringify(form),

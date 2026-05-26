@@ -152,6 +152,10 @@ const AuthForm = ({ activeTab, setActiveTab }) => {
         throw new Error(data.message);
       }
 
+      if (!data.token) {
+        throw new Error("Register successful, but no auth token was returned");
+      }
+
       /**
        * SAVE TOKEN
        */
@@ -239,6 +243,10 @@ const AuthForm = ({ activeTab, setActiveTab }) => {
        */
       if (!response.ok) {
         throw new Error(data.message);
+      }
+
+      if (!data.token) {
+        throw new Error("Register successful, but no auth token was returned");
       }
 
       /**

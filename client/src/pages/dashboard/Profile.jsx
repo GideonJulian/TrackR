@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const emptyForm = {
   name: "",
@@ -8,10 +9,13 @@ const emptyForm = {
 };
 
 const Profile = () => {
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -136,6 +140,43 @@ const Profile = () => {
       setError(err.message || "Unable to update profile");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+    setError("");
+    setMessage("");
+
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Please login first");
+      }
+
+      const response = await fetch("http://localhost:4000/api/v1/user/delete", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unable to delete account");
+      }
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.dispatchEvent(new Event("user-updated"));
+      navigate("/auth");
+    } catch (err) {
+      setError(err.message || "Unable to delete account");
+      setShowDeleteModal(false);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -325,12 +366,55 @@ const Profile = () => {
 
           <button
             type="button"
+            onClick={() => setShowDeleteModal(true)}
             className="h-10 px-4 rounded-lg border border-red-500 bg-white text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors"
           >
             Delete Account
           </button>
         </div>
       </section>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 px-4">
+          <div className="w-full max-w-md rounded-xl border border-red-200 bg-white p-6 shadow-2xl">
+            <div className="flex items-start gap-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600">
+                <span className="material-symbols-outlined">warning</span>
+              </div>
+
+              <div>
+                <h2 className="text-lg font-bold text-[#161d19]">
+                  Delete account?
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-[#3c4a42]">
+                  This will permanently delete your account, profile, and saved
+                  data. This action cannot be undone.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => setShowDeleteModal(false)}
+                className="h-10 rounded-lg border border-[#bbcabf] px-4 text-sm font-semibold text-[#161d19] hover:bg-[#eef6ee] disabled:cursor-not-allowed disabled:opacity-60 transition-colors"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={handleDeleteAccount}
+                className="h-10 rounded-lg bg-red-600 px-4 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-red-300 transition-colors"
+              >
+                {deleting ? "Deleting..." : "Yes, delete account"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
