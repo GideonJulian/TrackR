@@ -194,8 +194,8 @@ const DashboardHome = () => {
         };
 
         const [userResponse, jobsResponse] = await Promise.all([
-          fetch("https://trackr-zpcz.onrender.com/v1/user/me", { headers }),
-          fetch("https://trackr-zpcz.onrender.com/v1/jobs", { headers }),
+          fetch("https://trackr-zpcz.onrender.com/api/v1/user/me", { headers }),
+          fetch("https://trackr-zpcz.onrender.com/api/v1/jobs", { headers }),
         ]);
 
         const userData = await userResponse.json();
