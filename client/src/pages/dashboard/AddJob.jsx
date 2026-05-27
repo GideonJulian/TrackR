@@ -345,7 +345,7 @@ export default function AddJob({ onSubmit }) {
               </label>
 
               <div className="grid grid-cols-1 gap-3">
-                {["Applied", "Interview", "Offer", "Rejected"].map((s) => (
+                {["Applied", "Interview", "Accepted", "Rejected"].map((s) => (
                   <label
                     key={s}
                     className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#dde4dd] transition-all cursor-pointer"
