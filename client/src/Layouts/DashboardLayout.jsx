@@ -202,7 +202,13 @@ const DashboardLayout = () => {
           <div className="flex items-center gap-2">
             {/* MOBILE TITLE */}
             <h1 className="block md:hidden text-[#006c49] font-black text-xl tracking-tight">
-              Track<span className="text-[#161d19]">r</span>
+              {activeTab === "profile" ? (
+                "Profile"
+              ) : (
+                <>
+                  Track<span className="text-[#161d19]">r</span>
+                </>
+              )}
             </h1>
 
             {/* DESKTOP TITLE */}
@@ -220,19 +226,37 @@ const DashboardLayout = () => {
               </span>
             </button>
 
-            {/* PROFILE */}
-            <div
-              onClick={() => navigate("/dashboard/profile")}
-              className="h-8 w-8 cursor-pointer overflow-hidden rounded-full border border-[#dde4dd] bg-white md:h-11 md:w-11 md:border-[3px] md:border-black"
-            >
-              {profilePicture && (
-                <img
-                  src={profilePicture}
-                  alt="profile"
-                  className="w-full h-full object-cover"
-                />
-              )}
-            </div>
+            {activeTab === "profile" ? (
+            <></>
+            ) : (
+              <div
+                onClick={() => navigate("/dashboard/profile")}
+                className="h-8 w-8 cursor-pointer overflow-hidden rounded-full border border-[#dde4dd] bg-white md:h-11 md:w-11 md:border-[3px] md:border-black"
+              >
+                {profilePicture && (
+                  <img
+                    src={profilePicture}
+                    alt="profile"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+            )}
+
+            {activeTab === "profile" && (
+              <div
+                onClick={() => navigate("/dashboard/profile")}
+                className="hidden h-11 w-11 cursor-pointer overflow-hidden rounded-full border-[3px] border-black bg-white md:block"
+              >
+                {profilePicture && (
+                  <img
+                    src={profilePicture}
+                    alt="profile"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+            )}
           </div>
         </header>
 

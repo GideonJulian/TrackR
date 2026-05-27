@@ -95,6 +95,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [form, setForm] = useState(emptyForm);
+  const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -129,6 +130,24 @@ const Profile = () => {
           profilePicture: data.user?.profilePicture || "",
           bio: data.user?.bio || "",
         });
+
+        try {
+          const jobsResponse = await fetch(
+            "https://trackr-zpcz.onrender.com/api/v1/jobs",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const jobsData = await jobsResponse.json();
+
+          if (jobsResponse.ok) {
+            setJobs(jobsData.jobs || []);
+          }
+        } catch {
+          setJobs([]);
+        }
       } catch (err) {
         setError(err.message || "Unable to fetch profile");
       } finally {
@@ -263,12 +282,155 @@ const Profile = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.dispatchEvent(new Event("user-updated"));
+    navigate("/auth");
+  };
+
   if (loading) {
     return <ProfileLoading />;
   }
 
+  const interviewCount = jobs.filter((job) => job.status === "Interview").length;
+  const profileSubtitle = form.bio || "Trackr member";
+
   return (
     <div className="mx-auto w-full max-w-5xl">
+      <div className="mx-auto flex max-w-lg flex-col space-y-7 md:hidden">
+        <section className="mt-4 flex flex-col items-center text-center">
+          <div className="relative mb-4">
+            <div className="h-24 w-24 overflow-hidden rounded-full border-2 border-[#006c49] bg-[#eef6ee]">
+              {form.profilePicture ? (
+                <img
+                  alt="Profile"
+                  className="h-full w-full object-cover"
+                  src={form.profilePicture}
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center">
+                  <span className="material-symbols-outlined text-[48px] text-[#006c49]">
+                    person
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <input
+              ref={fileInputRef}
+              className="hidden"
+              type="file"
+              accept="image/png,image/jpeg"
+              onChange={handleProfilePicture}
+            />
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="absolute bottom-0 right-0 rounded-full border-2 border-white bg-[#006c49] p-2 text-white shadow-sm"
+              aria-label="Change avatar"
+            >
+              <span className="material-symbols-outlined !text-[18px]">
+                edit
+              </span>
+            </button>
+          </div>
+
+          <h2 className="text-3xl font-bold text-[#161d19]">
+            {form.name || "Your Profile"}
+          </h2>
+          <p className="mt-1 line-clamp-2 max-w-sm text-sm leading-6 text-[#3c4a42]">
+            {profileSubtitle}
+          </p>
+
+          <div className="mt-4 flex gap-2">
+            <span className="rounded bg-[#dff5e7] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#006c49]">
+              Pro Account
+            </span>
+          </div>
+
+          {error && (
+            <p className="mt-4 w-full rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+              {error}
+            </p>
+          )}
+        </section>
+
+        <section className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col rounded border border-[#dde4dd] bg-[#f8fbf8] p-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#3c4a42]">
+              Applied
+            </span>
+            <span className="text-3xl font-black text-[#161d19]">
+              {jobs.length}
+            </span>
+          </div>
+          <div className="flex flex-col rounded border border-[#dde4dd] bg-[#f8fbf8] p-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#3c4a42]">
+              Interviews
+            </span>
+            <span className="text-3xl font-black text-[#006c49]">
+              {interviewCount}
+            </span>
+          </div>
+        </section>
+
+        <section className="flex flex-col space-y-3">
+          <h3 className="px-1 text-xs font-bold uppercase tracking-wider text-[#3c4a42]">
+            Job Search
+          </h3>
+          <div className="overflow-hidden rounded-xl border border-[#dde4dd] bg-[#eef6ee] divide-y divide-[#dde4dd]">
+            <button
+              type="button"
+              onClick={() => navigate("/dashboard/resumes")}
+              className="group flex w-full items-center justify-between p-4 text-left transition-colors active:bg-[#dde4dd]"
+            >
+              <div className="flex items-center gap-4">
+                <span className="material-symbols-outlined text-[#006c49]">
+                  description
+                </span>
+                <span className="font-medium text-[#161d19]">
+                  Resume Manager
+                </span>
+              </div>
+              <span className="material-symbols-outlined text-[#bbcabf] group-active:text-[#161d19]">
+                chevron_right
+              </span>
+            </button>
+
+            <button
+              type="button"
+              className="group flex w-full items-center justify-between p-4 text-left transition-colors active:bg-[#dde4dd]"
+            >
+              <div className="flex items-center gap-4">
+                <span className="material-symbols-outlined text-[#006c49]">
+                  notifications_active
+                </span>
+                <span className="font-medium text-[#161d19]">Job Alerts</span>
+              </div>
+              <span className="material-symbols-outlined text-[#bbcabf] group-active:text-[#161d19]">
+                chevron_right
+              </span>
+            </button>
+          </div>
+        </section>
+
+        <section className="pt-3">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-500 bg-white px-4 py-4 font-bold text-red-600 transition-colors active:bg-red-50"
+          >
+            <span className="material-symbols-outlined">logout</span>
+            Logout
+          </button>
+          <p className="mt-7 text-center text-xs text-[#3c4a42]">
+            Trackr Version 2.4.0 (Build 892)
+          </p>
+        </section>
+      </div>
+
+      <div className="hidden md:block">
       <header className="mb-10">
         <h1 className="text-3xl md:text-[45px] leading-tight font-bold text-[#161d19]">
           Profile & Settings
@@ -496,6 +658,7 @@ const Profile = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };
