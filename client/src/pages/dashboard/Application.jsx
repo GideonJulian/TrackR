@@ -130,6 +130,7 @@ const Application = () => {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all-jobs");
+  const [openMenuId, setOpenMenuId] = useState(null);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -279,6 +280,9 @@ const Application = () => {
                     columnJobs.map((job) => (
                       <div
                         key={job._id}
+                        onClick={() =>
+                          navigate(`/dashboard/applications/${job._id}`)
+                        }
                         className={`group cursor-pointer rounded-lg bg-white p-4 transition-all hover:border-[#006c49] hover:shadow-sm ${
                           column.id === "interviewing"
                             ? "border-2 border-[#006c49]"
@@ -304,7 +308,10 @@ const Application = () => {
                               </span>
                             )}
                           </div>
-                          <button className="text-[#3c4a42] opacity-0 transition-opacity group-hover:opacity-100">
+                          <button
+                            onClick={(event) => event.stopPropagation()}
+                            className="text-[#3c4a42] opacity-0 transition-opacity group-hover:opacity-100"
+                          >
                             <span className="material-symbols-outlined text-[20px]">
                               more_horiz
                             </span>
@@ -387,7 +394,8 @@ const Application = () => {
             mobileJobs.map((job) => (
               <div
                 key={job._id}
-                className="flex cursor-pointer flex-col gap-3 border border-[#dde4dd] bg-white p-4 transition-colors active:border-[#006c49]"
+                onClick={() => navigate(`/dashboard/applications/${job._id}`)}
+                className="relative flex cursor-pointer flex-col gap-3 border border-[#dde4dd] bg-white p-4 transition-colors active:border-[#006c49]"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex min-w-0 items-center gap-3">
@@ -403,9 +411,62 @@ const Application = () => {
                       </h3>
                     </div>
                   </div>
-                  <span className="material-symbols-outlined text-[20px] text-[#3c4a42]">
-                    more_vert
-                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setOpenMenuId(openMenuId === job._id ? null : job._id);
+                    }}
+                    className="text-[20px] text-[#3c4a42]"
+                  >
+                    <span className="material-symbols-outlined">
+                      more_vert
+                    </span>
+                  </button>
+                  {openMenuId === job._id && (
+                    <div className="absolute right-4 top-12 z-50 rounded-lg border border-[#dde4dd] bg-white shadow-lg">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/dashboard/applications/${job._id}`);
+                          setOpenMenuId(null);
+                        }}
+                        className="flex w-full items-center gap-2 px-4 py-2 text-sm font-medium text-[#161d19] transition-colors hover:bg-[#eef6ee]"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">
+                          edit
+                        </span>
+                        Edit
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/dashboard/applications/${job._id}?action=status`);
+                          setOpenMenuId(null);
+                        }}
+                        className="flex w-full items-center gap-2 px-4 py-2 text-sm font-medium text-[#161d19] transition-colors hover:bg-[#eef6ee]"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">
+                          update
+                        </span>
+                        Update Status
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (window.confirm("Are you sure you want to delete this application?")) {
+                            setJobs(jobs.filter(j => j._id !== job._id));
+                            setOpenMenuId(null);
+                          }
+                        }}
+                        className="flex w-full items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">
+                          delete
+                        </span>
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-1 flex flex-wrap gap-1.5">

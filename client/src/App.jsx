@@ -5,6 +5,7 @@ import AuthPage from "./pages/AuthPage";
 import DashboardLayout from "./Layouts/DashboardLayout";
 import DashboardHome from "./pages/dashboard/DashboardHome";
 import Application from "./pages/dashboard/Application";
+import JobDetails from "./pages/dashboard/JobDetails";
 import Interviews from "./pages/dashboard/Interviews";
 import AddJob from "./pages/dashboard/AddJob";
 import Resume from "./pages/dashboard/Resume";
@@ -39,6 +40,10 @@ const App = () => {
         {
           path: "applications",
           element: <Application />,
+        },
+        {
+          path: "applications/:jobId",
+          element: <JobDetails />,
         },
         {
           path: "interviews",

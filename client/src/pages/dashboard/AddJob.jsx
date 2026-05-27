@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+const JOBS_ENDPOINT = "https://trackr-zpcz.onrender.com/api/v1/jobs";
 
 /**
  * SUCCESS / ERROR POPUP
@@ -42,6 +45,11 @@ const StatusPopup = ({ show, type, message }) => {
 };
 
 export default function AddJob({ onSubmit }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const editingJob = location.state?.job || null;
+  const isEditing = location.state?.mode === "edit" && editingJob?._id;
+
   /**
    * LOADING
    */
@@ -60,13 +68,13 @@ export default function AddJob({ onSubmit }) {
    * FORM STATE
    */
   const [form, setForm] = useState({
-    company: "",
-    role: "",
-    status: "Applied",
-    location: "",
-    salary: "",
-    jobLink: "",
-    notes: "",
+    company: editingJob?.company || "",
+    role: editingJob?.role || "",
+    status: editingJob?.status || "Applied",
+    location: editingJob?.location || "",
+    salary: editingJob?.salary || "",
+    jobLink: editingJob?.jobLink || "",
+    notes: editingJob?.notes || "",
   });
 
   /**
@@ -122,10 +130,9 @@ export default function AddJob({ onSubmit }) {
        * API REQUEST
        */
       const response = await fetch(
-        // "http://localhost:4000/api/v1/jobs",
-        "https://trackr-zpcz.onrender.com/api/v1/jobs",
+        isEditing ? `${JOBS_ENDPOINT}/${editingJob._id}` : JOBS_ENDPOINT,
         {
-          method: "POST",
+          method: isEditing ? "PUT" : "POST",
 
           headers: {
             "Content-Type": "application/json",
@@ -151,20 +158,27 @@ export default function AddJob({ onSubmit }) {
       /**
        * SUCCESS POPUP
        */
-      showPopup("Job added successfully", "success");
+      showPopup(
+        isEditing ? "Job updated successfully" : "Job added successfully",
+        "success"
+      );
 
       /**
        * RESET FORM
        */
-      setForm({
-        company: "",
-        role: "",
-        status: "Applied",
-        location: "",
-        salary: "",
-        jobLink: "",
-        notes: "",
-      });
+      if (isEditing) {
+        navigate(`/dashboard/applications/${data.job?._id || editingJob._id}`);
+      } else {
+        setForm({
+          company: "",
+          role: "",
+          status: "Applied",
+          location: "",
+          salary: "",
+          jobLink: "",
+          notes: "",
+        });
+      }
 
       /**
        * OPTIONAL CALLBACK
@@ -194,12 +208,13 @@ export default function AddJob({ onSubmit }) {
         {/* HEADER */}
         <div className="border-b border-[#bbcabf] pb-8">
           <h2 className="text-[38px] md:text-[48px] leading-[1.1] font-black text-[#006c49] tracking-tight">
-            New Career Opportunity
+            {isEditing ? "Edit Career Opportunity" : "New Career Opportunity"}
           </h2>
 
           <p className="text-[15px] md:text-[16px] text-[#3c4a42] mt-3 max-w-2xl">
-            Track a new application and manage your career journey smarter with
-            Trackr.
+            {isEditing
+              ? "Update the details for this role and keep your pipeline current."
+              : "Track a new application and manage your career journey smarter with Trackr."}
           </p>
         </div>
 
@@ -368,7 +383,7 @@ export default function AddJob({ onSubmit }) {
                   </>
                 ) : (
                   <>
-                    Save Application
+                    {isEditing ? "Update Application" : "Save Application"}
                     <span className="material-symbols-outlined text-[20px]">
                       check_circle
                     </span>

@@ -43,6 +43,16 @@ const DashboardLayout = () => {
     };
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("activeResume");
+    localStorage.removeItem("resume");
+    setProfilePicture("");
+    window.dispatchEvent(new Event("user-updated"));
+    navigate("/auth", { replace: true });
+  };
+
   /**
    * ACTIVE TAB FROM URL
    */
@@ -183,13 +193,23 @@ const DashboardLayout = () => {
           })}
         </nav>
 
-        <div className="border-t border-[#bbcabf] pt-4">
+        <div className="space-y-3 border-t border-[#bbcabf] pt-4">
           <button
             onClick={() => navigate("/dashboard/add-job")}
             className="w-full flex items-center justify-center gap-2 rounded-lg bg-[#006c49] px-4 py-3 font-bold text-white shadow-md transition-all hover:bg-[#00563a] active:scale-[0.98]"
           >
             <span className="material-symbols-outlined text-[20px]">add</span>
             <span>Add Job</span>
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-3 font-bold text-red-600 transition-all hover:bg-red-50 active:scale-[0.98]"
+          >
+            <span className="material-symbols-outlined text-[20px]">
+              logout
+            </span>
+            <span>Logout</span>
           </button>
         </div>
       </aside>

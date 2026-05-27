@@ -285,8 +285,10 @@ const Profile = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("activeResume");
+    localStorage.removeItem("resume");
     window.dispatchEvent(new Event("user-updated"));
-    navigate("/auth");
+    navigate("/auth", { replace: true });
   };
 
   if (loading) {
@@ -596,6 +598,23 @@ const Profile = () => {
               </button>
             </div>
           </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[#bbcabf] pt-8">
+          <div>
+            <h2 className="font-bold text-[#161d19]">Sign Out</h2>
+            <p className="mt-1 text-sm text-[#3c4a42]">
+              End this session and return to the authentication page.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="h-10 px-4 rounded-lg border border-[#bbcabf] bg-white text-sm font-semibold text-[#006c49] hover:bg-[#eef6ee] transition-colors"
+          >
+            Logout
+          </button>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[#bbcabf] pt-8 pb-6">
