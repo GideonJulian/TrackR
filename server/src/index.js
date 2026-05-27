@@ -1,3 +1,4 @@
+import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import app from "./app.js";
@@ -5,6 +6,10 @@ import app from "./app.js";
 dotenv.config({
   path: "./.env",
 });
+app.use(
+  "/uploads",
+  express.static("src/uploads")
+);
 
 const startServer = async () => {
   try {
