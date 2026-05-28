@@ -60,7 +60,7 @@ Trackr/
 ### Clone the Project
 
 ```bash
-git clone https://github.com/yourusername/trackr.git
+[https://github.com/GideonJulian/TrackR.git]
 ```
 
 ### Frontend Setup
@@ -77,18 +77,6 @@ npm run dev
 cd server
 npm install
 npm run dev
-```
-
----
-
-## 🔑 Environment Variables
-
-Create a `.env` file inside the `server` folder:
-
-```env
-PORT=4000
-MONGO_URI=your_mongodb_uri
-JWT_SECRET=your_secret
 ```
 
 ---
