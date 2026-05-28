@@ -267,11 +267,13 @@ const DashboardHome = () => {
       .filter(Boolean)
       .some((value) => value.toLowerCase().includes(query));
   });
-  const interviewJobs = jobs.filter((job) => job.status === "Interview").slice(0, 2);
+  const interviewJobs = jobs
+    .filter((job) => job.status === "Interview")
+    .slice(0, 2);
   const greeting = new Date().getHours() < 12 ? "Good morning" : "Welcome back";
   const totalApplications = summary[0];
   const mobileCarouselStats = summary.filter((item) =>
-    ["Interviews", "Offers", "Rejected"].includes(item.label)
+    ["Interviews", "Offers", "Rejected"].includes(item.label),
   );
 
   const getJobIcon = (job) => {
@@ -358,433 +360,434 @@ const DashboardHome = () => {
           </section>
         ) : (
           <>
-        <section className="space-y-4">
-          <div className="flex items-end justify-between">
-            <h2 className="text-2xl font-bold leading-tight text-[#161d19]">
-              Your Activity
-            </h2>
-            <span className="text-sm font-semibold text-[#3c4a42]">
-              Last 30 days
-            </span>
-          </div>
+            <section className="space-y-4">
+              <div className="flex items-end justify-between">
+                <h2 className="text-2xl font-bold leading-tight text-[#161d19]">
+                  Your Activity
+                </h2>
+                <span className="text-sm font-semibold text-[#3c4a42]">
+                  Last 30 days
+                </span>
+              </div>
 
-          <div className="flex items-center justify-between rounded-xl border border-[#006c49] bg-[#006c49] p-5 text-white shadow-sm">
-            <div className="space-y-1">
-              <p className="text-xs font-bold uppercase tracking-wider text-white/80">
-                {totalApplications.label}
-              </p>
-              <p className="text-5xl font-black leading-none">
-                {totalApplications.value}
-              </p>
-            </div>
-            <div className="rounded-lg bg-white/10 p-4">
-              <span className="material-symbols-outlined text-[32px]">
-                trending_up
-              </span>
-            </div>
-          </div>
-
-          <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex snap-x snap-mandatory gap-3 pb-1">
-              {mobileCarouselStats.map((item) => (
-                <div
-                  key={item.label}
-                  className="min-w-[78%] snap-start rounded-xl border border-[#dde4dd] bg-[#f8fbf8] p-4"
-                >
-                  <div className="mb-5 flex items-center justify-between">
-                    <p className="text-sm font-semibold text-[#3c4a42]">
-                      {item.label}
-                    </p>
-                    <span className="material-symbols-outlined text-[#006c49]">
-                      {item.icon}
-                    </span>
-                  </div>
-                  <p className="text-4xl font-black text-[#161d19]">
-                    {item.value}
+              <div className="flex items-center justify-between rounded-xl border border-[#006c49] bg-[#006c49] p-5 text-white shadow-sm">
+                <div className="space-y-1">
+                  <p className="text-xs font-bold uppercase tracking-wider text-white/80">
+                    {totalApplications.label}
                   </p>
-                  <p className="mt-1 text-sm text-[#3c4a42]">{item.note}</p>
+                  <p className="text-5xl font-black leading-none">
+                    {totalApplications.value}
+                  </p>
                 </div>
-              ))}
-            </div>
-          </div>
+                <div className="rounded-lg bg-white/10 p-4">
+                  <span className="material-symbols-outlined text-[32px]">
+                    trending_up
+                  </span>
+                </div>
+              </div>
 
-          <div className="flex justify-center gap-1.5">
-            {mobileCarouselStats.map((item, index) => (
-              <span
-                key={item.label}
-                className={`h-1.5 rounded-full ${
-                  index === 0 ? "w-5 bg-[#006c49]" : "w-1.5 bg-[#bbcabf]"
-                }`}
-              />
-            ))}
-          </div>
-        </section>
+              <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div className="flex snap-x snap-mandatory gap-3 pb-1">
+                  {mobileCarouselStats.map((item) => (
+                    <div
+                      key={item.label}
+                      className="min-w-[78%] snap-start rounded-xl border border-[#dde4dd] bg-[#f8fbf8] p-4"
+                    >
+                      <div className="mb-5 flex items-center justify-between">
+                        <p className="text-sm font-semibold text-[#3c4a42]">
+                          {item.label}
+                        </p>
+                        <span className="material-symbols-outlined text-[#006c49]">
+                          {item.icon}
+                        </span>
+                      </div>
+                      <p className="text-4xl font-black text-[#161d19]">
+                        {item.value}
+                      </p>
+                      <p className="mt-1 text-sm text-[#3c4a42]">{item.note}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-        <section className="mt-7 space-y-4">
-          <div className="flex items-center justify-between border-b border-[#dde4dd] pb-2">
-            <h2 className="text-2xl font-bold leading-tight text-[#161d19]">
-              Recent Apps
-            </h2>
-            <button
-              onClick={() => navigate("/dashboard/applications")}
-              className="text-sm font-bold text-[#006c49] hover:underline"
-            >
-              View All
-            </button>
-          </div>
+              <div className="flex justify-center gap-1.5">
+                {mobileCarouselStats.map((item, index) => (
+                  <span
+                    key={item.label}
+                    className={`h-1.5 rounded-full ${
+                      index === 0 ? "w-5 bg-[#006c49]" : "w-1.5 bg-[#bbcabf]"
+                    }`}
+                  />
+                ))}
+              </div>
+            </section>
 
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-              <span className="material-symbols-outlined text-[#3c4a42]">
-                search
-              </span>
-            </div>
-            <input
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              className="w-full rounded-full border border-[#dde4dd] bg-[#eef6ee] py-4 pl-12 pr-20 text-sm text-[#161d19] outline-none transition-all placeholder:text-[#3c4a42]/60 focus:border-[#006c49] focus:ring-1 focus:ring-[#006c49]"
-              placeholder="Search applications..."
-              type="text"
-            />
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
-              <span className="rounded border border-[#dde4dd] bg-[#f8fbf8] px-2 py-1 font-mono text-[10px] text-[#3c4a42]">
-                Ctrl K
-              </span>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            {filteredRecentJobs.length ? (
-              filteredRecentJobs.map((job) => (
-                <div
-                  key={job._id}
-                  className="flex items-center gap-3 rounded-lg border border-[#dde4dd] bg-white p-4 transition-colors hover:bg-[#f8fbf8]"
+            <section className="mt-7 space-y-4">
+              <div className="flex items-center justify-between border-b border-[#dde4dd] pb-2">
+                <h2 className="text-2xl font-bold leading-tight text-[#161d19]">
+                  Recent Apps
+                </h2>
+                <button
+                  onClick={() => navigate("/dashboard/applications")}
+                  className="text-sm font-bold text-[#006c49] hover:underline"
                 >
+                  View All
+                </button>
+              </div>
+
+              <div className="relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                  <span className="material-symbols-outlined text-[#3c4a42]">
+                    search
+                  </span>
+                </div>
+                <input
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  className="w-full rounded-full border border-[#dde4dd] bg-[#eef6ee] py-4 pl-12 pr-20 text-sm text-[#161d19] outline-none transition-all placeholder:text-[#3c4a42]/60 focus:border-[#006c49] focus:ring-1 focus:ring-[#006c49]"
+                  placeholder="Search applications..."
+                  type="text"
+                />
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+                  <span className="rounded border border-[#dde4dd] bg-[#f8fbf8] px-2 py-1 font-mono text-[10px] text-[#3c4a42]">
+                    Ctrl K
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {filteredRecentJobs.length ? (
+                  filteredRecentJobs.map((job) => (
+                    <div
+                      key={job._id}
+                      className="flex items-center gap-3 rounded-lg border border-[#dde4dd] bg-white p-4 transition-colors hover:bg-[#f8fbf8]"
+                    >
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[#dde4dd] bg-[#eef6ee] text-[#006c49]">
+                        <span className="material-symbols-outlined">
+                          {getJobIcon(job)}
+                        </span>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="truncate font-serif text-base font-semibold text-[#161d19]">
+                          {job.role || "Untitled role"}
+                        </h3>
+                        <p className="truncate text-sm text-[#3c4a42]">
+                          {job.company || "Unknown company"}
+                        </p>
+                      </div>
+                      <span
+                        className={`shrink-0 rounded px-2 py-1 text-xs font-bold ${
+                          mobileStatusStyles[job.status] ||
+                          mobileStatusStyles.Applied
+                        }`}
+                      >
+                        {job.status || "Applied"}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="rounded-lg border border-dashed border-[#bbcabf] bg-white p-5 text-center text-sm leading-6 text-[#3c4a42]">
+                    {hasApplications
+                      ? "No recent applications match your search."
+                      : "No applications yet. Add your first job to start tracking."}
+                  </div>
+                )}
+              </div>
+            </section>
+
+            <section className="mt-7 space-y-4">
+              <div className="flex items-center justify-between border-b border-[#dde4dd] pb-2">
+                <h2 className="text-2xl font-bold leading-tight text-[#161d19]">
+                  Active Resume
+                </h2>
+                <button
+                  onClick={() => navigate("/dashboard/resumes")}
+                  className="text-sm font-bold text-[#006c49] hover:underline"
+                >
+                  Manage
+                </button>
+              </div>
+
+              {activeResume ? (
+                <div className="flex items-center gap-4 rounded-lg border border-[#dde4dd] bg-white p-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[#dde4dd] bg-[#eef6ee] text-[#006c49]">
-                    <span className="material-symbols-outlined">
-                      {getJobIcon(job)}
+                    <span className="material-symbols-outlined text-[28px]">
+                      picture_as_pdf
                     </span>
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="truncate font-serif text-base font-semibold text-[#161d19]">
-                      {job.role || "Untitled role"}
-                    </h3>
-                    <p className="truncate text-sm text-[#3c4a42]">
-                      {job.company || "Unknown company"}
+                    <p className="truncate font-semibold text-[#161d19]">
+                      {activeResume.name || "Uploaded resume"}
+                    </p>
+                    <p className="text-sm text-[#3c4a42]">
+                      Ready for applications
                     </p>
                   </div>
-                  <span
-                    className={`shrink-0 rounded px-2 py-1 text-xs font-bold ${
-                      mobileStatusStyles[job.status] ||
-                      mobileStatusStyles.Applied
-                    }`}
+                  <span className="material-symbols-outlined text-[#3c4a42]">
+                    chevron_right
+                  </span>
+                </div>
+              ) : (
+                <div className="rounded-lg border border-dashed border-[#bbcabf] bg-white p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#eef6ee] text-[#006c49]">
+                      <span className="material-symbols-outlined text-[28px]">
+                        article
+                      </span>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-[#161d19]">
+                        No resume uploaded
+                      </p>
+                      <p className="mt-1 text-sm leading-6 text-[#3c4a42]">
+                        Upload a resume to keep your materials close to your job
+                        tracker.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => navigate("/dashboard/resumes")}
+                    className="mt-4 w-full rounded-lg border border-[#006c49] py-3 text-sm font-bold text-[#006c49] transition-colors hover:bg-[#eef6ee]"
                   >
-                    {job.status || "Applied"}
-                  </span>
+                    Upload Resume
+                  </button>
                 </div>
-              ))
-            ) : (
-              <div className="rounded-lg border border-dashed border-[#bbcabf] bg-white p-5 text-center text-sm leading-6 text-[#3c4a42]">
-                {hasApplications
-                  ? "No recent applications match your search."
-                  : "No applications yet. Add your first job to start tracking."}
-              </div>
-            )}
-          </div>
-        </section>
+              )}
+            </section>
 
-        <section className="mt-7 space-y-4">
-          <div className="flex items-center justify-between border-b border-[#dde4dd] pb-2">
-            <h2 className="text-2xl font-bold leading-tight text-[#161d19]">
-              Active Resume
-            </h2>
             <button
-              onClick={() => navigate("/dashboard/resumes")}
-              className="text-sm font-bold text-[#006c49] hover:underline"
+              onClick={() => navigate("/dashboard/add-job")}
+              className="fixed bottom-24 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#006c49] text-white shadow-lg transition-all hover:scale-105 active:scale-95"
+              aria-label="Add job"
             >
-              Manage
+              <span className="material-symbols-outlined text-[28px]">add</span>
             </button>
-          </div>
-
-          {activeResume ? (
-            <div className="flex items-center gap-4 rounded-lg border border-[#dde4dd] bg-white p-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[#dde4dd] bg-[#eef6ee] text-[#006c49]">
-                <span className="material-symbols-outlined text-[28px]">
-                  picture_as_pdf
-                </span>
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-semibold text-[#161d19]">
-                  {activeResume.name || "Uploaded resume"}
-                </p>
-                <p className="text-sm text-[#3c4a42]">
-                  Ready for applications
-                </p>
-              </div>
-              <span className="material-symbols-outlined text-[#3c4a42]">
-                chevron_right
-              </span>
-            </div>
-          ) : (
-            <div className="rounded-lg border border-dashed border-[#bbcabf] bg-white p-5">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#eef6ee] text-[#006c49]">
-                  <span className="material-symbols-outlined text-[28px]">
-                    article
-                  </span>
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-[#161d19]">
-                    No resume uploaded
-                  </p>
-                  <p className="mt-1 text-sm leading-6 text-[#3c4a42]">
-                    Upload a resume to keep your materials close to your job
-                    tracker.
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => navigate("/dashboard/resumes")}
-                className="mt-4 w-full rounded-lg border border-[#006c49] py-3 text-sm font-bold text-[#006c49] transition-colors hover:bg-[#eef6ee]"
-              >
-                Upload Resume
-              </button>
-            </div>
-          )}
-        </section>
-
-        <button
-          onClick={() => navigate("/dashboard/add-job")}
-          className="fixed bottom-24 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#006c49] text-white shadow-lg transition-all hover:scale-105 active:scale-95"
-          aria-label="Add job"
-        >
-          <span className="material-symbols-outlined text-[28px]">add</span>
-        </button>
           </>
         )}
       </div>
 
       <div className="hidden md:block">
-      <section>
-        <h1 className="text-3xl md:text-[45px] leading-tight font-bold text-[#161d19]">
-          {greeting}, {firstName}
-        </h1>
-        <p className="mt-2 text-base md:text-lg leading-7 text-[#3c4a42]">
-          Here's what's happening with your job search today.
-        </p>
-      </section>
-
-      {!hasApplications ? (
-        <div className="mt-10 bg-white border border-[#dde4dd] rounded-3xl p-8 md:p-12 flex flex-col items-center text-center">
-          <div className="w-24 h-24 rounded-3xl bg-[#eef6ee] flex items-center justify-center mb-6">
-            <span className="material-symbols-outlined text-[#006c49] text-[48px]">
-              work
-            </span>
-          </div>
-
-          <h2 className="text-3xl md:text-4xl font-bold text-[#161d19]">
-            No applications yet
-          </h2>
-
-          <p className="max-w-md mt-3 text-[#3c4a42] text-[16px] leading-7">
-            Start tracking your job applications, interviews, and offers in one
-            clean workspace.
+        <section>
+          <h1 className="text-3xl md:text-[45px] leading-tight font-bold text-[#161d19]">
+            {greeting}, {firstName}
+          </h1>
+          <p className="mt-2 text-base md:text-lg leading-7 text-[#3c4a42]">
+            Here's what's happening with your job search today.
           </p>
+        </section>
 
-          <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full sm:w-auto">
-            <button
-              onClick={() => navigate("/dashboard/add-job")}
-              className="h-12 px-6 rounded-xl bg-[#006c49] hover:bg-[#00563a] text-white font-semibold transition-all"
-            >
-              Add Your First Job
-            </button>
+        {!hasApplications ? (
+          <div className="mt-10 bg-white border border-[#dde4dd] rounded-3xl p-8 md:p-12 flex flex-col items-center text-center">
+            <div className="w-24 h-24 rounded-3xl bg-[#eef6ee] flex items-center justify-center mb-6">
+              <span className="material-symbols-outlined text-[#006c49] text-[48px]">
+                work
+              </span>
+            </div>
 
-            <button
-              onClick={() => navigate("/dashboard/profile")}
-              className="h-12 px-6 rounded-xl border border-[#bbcabf] hover:bg-[#f4fbf4] text-[#161d19] font-semibold transition-all"
-            >
-              Setup Profile
-            </button>
-          </div>
-        </div>
-      ) : (
-        <>
-          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {summary.map((item) => (
-              <div
-                key={item.label}
-                className="rounded-xl border border-[#dde4dd] bg-white p-5 transition-colors hover:bg-[#f8fbf8]"
+            <h2 className="text-3xl md:text-4xl font-bold text-[#161d19]">
+              No applications yet
+            </h2>
+
+            <p className="max-w-md mt-3 text-[#3c4a42] text-[16px] leading-7">
+              Start tracking your job applications, interviews, and offers in
+              one clean workspace.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full sm:w-auto">
+              <button
+                onClick={() => navigate("/dashboard/add-job")}
+                className="h-12 px-6 rounded-xl bg-[#006c49] hover:bg-[#00563a] text-white font-semibold transition-all"
               >
-                <div className="mb-5 flex items-start justify-between gap-3">
-                  <div className="rounded-lg bg-[#eef6ee] p-3 text-[#006c49]">
-                    <span className="material-symbols-outlined">
-                      {item.icon}
+                Add Your First Job
+              </button>
+
+              <button
+                onClick={() => navigate("/dashboard/profile")}
+                className="h-12 px-6 rounded-xl border border-[#bbcabf] hover:bg-[#f4fbf4] text-[#161d19] font-semibold transition-all"
+              >
+                Setup Profile
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {summary.map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-xl border border-[#dde4dd] bg-white p-5 transition-colors hover:bg-[#f8fbf8]"
+                >
+                  <div className="mb-5 flex items-start justify-between gap-3">
+                    <div className="rounded-lg bg-[#eef6ee] p-3 text-[#006c49]">
+                      <span className="material-symbols-outlined">
+                        {item.icon}
+                      </span>
+                    </div>
+                    <span className="text-sm font-semibold text-[#006c49]">
+                      {item.note}
                     </span>
                   </div>
-                  <span className="text-sm font-semibold text-[#006c49]">
-                    {item.note}
-                  </span>
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#3c4a42]">
+                    {item.label}
+                  </h2>
+                  <p className="mt-2 text-4xl font-black text-[#161d19]">
+                    {item.value}
+                  </p>
                 </div>
-                <h2 className="text-xs font-bold uppercase tracking-wider text-[#3c4a42]">
-                  {item.label}
-                </h2>
-                <p className="mt-2 text-4xl font-black text-[#161d19]">
-                  {item.value}
-                </p>
-              </div>
-            ))}
-          </section>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            <section className="overflow-hidden rounded-xl border border-[#dde4dd] bg-white lg:col-span-2">
-              <div className="flex items-center justify-between border-b border-[#dde4dd] p-5">
-                <h2 className="text-xl font-bold text-[#006c49]">
-                  Recent Applications
-                </h2>
-                <button
-                  onClick={() => navigate("/dashboard/applications")}
-                  className="text-sm font-semibold text-[#006c49] hover:underline"
-                >
-                  View all
-                </button>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[680px] text-left">
-                  <thead className="border-b border-[#dde4dd] bg-[#f8fbf8]">
-                    <tr>
-                      <th className="px-5 py-4 text-sm font-semibold text-[#3c4a42]">
-                        Company
-                      </th>
-                      <th className="px-5 py-4 text-sm font-semibold text-[#3c4a42]">
-                        Role
-                      </th>
-                      <th className="px-5 py-4 text-sm font-semibold text-[#3c4a42]">
-                        Status
-                      </th>
-                      <th className="px-5 py-4 text-sm font-semibold text-[#3c4a42]">
-                        Date
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#dde4dd]">
-                    {recentJobs.map((job) => (
-                      <tr
-                        key={job._id}
-                        className="transition-colors hover:bg-[#f8fbf8]"
-                      >
-                        <td className="px-5 py-4">
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-9 w-9 items-center justify-center rounded border border-[#dde4dd] bg-[#eef6ee] text-sm font-bold text-[#006c49]">
-                              {job.company?.charAt(0)?.toUpperCase() || "J"}
-                            </div>
-                            <span className="font-semibold text-[#161d19]">
-                              {job.company}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-5 py-4 text-[#161d19]">
-                          {job.role}
-                        </td>
-                        <td className="px-5 py-4">
-                          <span
-                            className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                              statusStyles[job.status] || statusStyles.Applied
-                            }`}
-                          >
-                            {job.status}
-                          </span>
-                        </td>
-                        <td className="px-5 py-4 text-[#3c4a42]">
-                          {formatDate(job.createdAt)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              ))}
             </section>
 
-            <aside className="space-y-5">
-              <div className="rounded-xl border border-[#dde4dd] bg-white p-5">
-                <h2 className="mb-4 text-xl font-bold text-[#006c49]">
-                  Active Resume
-                </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+              <section className="overflow-hidden rounded-xl border border-[#dde4dd] bg-white lg:col-span-2">
+                <div className="flex items-center justify-between border-b border-[#dde4dd] p-5">
+                  <h2 className="text-xl font-bold text-[#006c49]">
+                    Recent Applications
+                  </h2>
+                  <button
+                    onClick={() => navigate("/dashboard/applications")}
+                    className="text-sm font-semibold text-[#006c49] hover:underline"
+                  >
+                    View all
+                  </button>
+                </div>
 
-                {activeResume ? (
-                  <div className="flex items-center gap-4 rounded-lg border border-[#dde4dd] bg-[#f8fbf8] p-4">
-                    <span className="material-symbols-outlined text-3xl text-[#006c49]">
-                      picture_as_pdf
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate font-semibold text-[#161d19]">
-                        {activeResume.name || "Uploaded resume"}
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[680px] text-left">
+                    <thead className="border-b border-[#dde4dd] bg-[#f8fbf8]">
+                      <tr>
+                        <th className="px-5 py-4 text-sm font-semibold text-[#3c4a42]">
+                          Company
+                        </th>
+                        <th className="px-5 py-4 text-sm font-semibold text-[#3c4a42]">
+                          Role
+                        </th>
+                        <th className="px-5 py-4 text-sm font-semibold text-[#3c4a42]">
+                          Status
+                        </th>
+                        <th className="px-5 py-4 text-sm font-semibold text-[#3c4a42]">
+                          Date
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#dde4dd]">
+                      {recentJobs.map((job) => (
+                        <tr
+                          key={job._id}
+                          className="transition-colors hover:bg-[#f8fbf8]"
+                        >
+                          <td className="px-5 py-4">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-9 w-9 items-center justify-center rounded border border-[#dde4dd] bg-[#eef6ee] text-sm font-bold text-[#006c49]">
+                                {job.company?.charAt(0)?.toUpperCase() || "J"}
+                              </div>
+                              <span className="font-semibold text-[#161d19]">
+                                {job.company}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-5 py-4 text-[#161d19]">
+                            {job.role}
+                          </td>
+                          <td className="px-5 py-4">
+                            <span
+                              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                                statusStyles[job.status] || statusStyles.Applied
+                              }`}
+                            >
+                              {job.status}
+                            </span>
+                          </td>
+                          <td className="px-5 py-4 text-[#3c4a42]">
+                            {formatDate(job.createdAt)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <aside className="space-y-5">
+                <div className="rounded-xl border border-[#dde4dd] bg-white p-5">
+                  <h2 className="mb-4 text-xl font-bold text-[#006c49]">
+                    Active Resume
+                  </h2>
+
+                  {activeResume ? (
+                    <div className="flex items-center gap-4 rounded-lg border border-[#dde4dd] bg-[#f8fbf8] p-4">
+                      <span className="material-symbols-outlined text-3xl text-[#006c49]">
+                        picture_as_pdf
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate font-semibold text-[#161d19]">
+                          {activeResume.name || "Uploaded resume"}
+                        </p>
+                        <p className="text-sm text-[#3c4a42]">
+                          Ready for applications
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="rounded-lg border border-dashed border-[#bbcabf] bg-[#f8fbf8] p-4">
+                      <p className="font-semibold text-[#161d19]">
+                        No resume uploaded
                       </p>
-                      <p className="text-sm text-[#3c4a42]">
-                        Ready for applications
+                      <p className="mt-1 text-sm leading-6 text-[#3c4a42]">
+                        Upload a resume to keep your application materials close
+                        to your job tracker.
                       </p>
                     </div>
-                  </div>
-                ) : (
-                  <div className="rounded-lg border border-dashed border-[#bbcabf] bg-[#f8fbf8] p-4">
-                    <p className="font-semibold text-[#161d19]">
-                      No resume uploaded
-                    </p>
-                    <p className="mt-1 text-sm leading-6 text-[#3c4a42]">
-                      Upload a resume to keep your application materials close
-                      to your job tracker.
-                    </p>
-                  </div>
-                )}
+                  )}
 
-                <button
-                  onClick={() => navigate("/dashboard/resumes")}
-                  className="mt-4 w-full rounded-lg border border-[#006c49] py-2 text-sm font-semibold text-[#006c49] transition-colors hover:bg-[#eef6ee]"
-                >
-                  Manage Resumes
-                </button>
-              </div>
+                  <button
+                    onClick={() => navigate("/dashboard/resumes")}
+                    className="mt-4 w-full rounded-lg border border-[#006c49] py-2 text-sm font-semibold text-[#006c49] transition-colors hover:bg-[#eef6ee]"
+                  >
+                    Manage Resumes
+                  </button>
+                </div>
 
-              <div className="rounded-xl border border-[#dde4dd] bg-white p-5">
-                <h2 className="mb-4 text-xl font-bold text-[#006c49]">
-                  Interviews
-                </h2>
+                <div className="rounded-xl border border-[#dde4dd] bg-white p-5">
+                  <h2 className="mb-4 text-xl font-bold text-[#006c49]">
+                    Interviews
+                  </h2>
 
-                {interviewJobs.length ? (
-                  <div className="space-y-4">
-                    {interviewJobs.map((job) => (
-                      <div key={job._id} className="flex gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded border border-[#dde4dd] bg-[#eef6ee] text-[#006c49]">
-                          <span className="material-symbols-outlined">
-                            event
-                          </span>
+                  {interviewJobs.length ? (
+                    <div className="space-y-4">
+                      {interviewJobs.map((job) => (
+                        <div key={job._id} className="flex gap-4">
+                          <div className="flex h-12 w-12 items-center justify-center rounded border border-[#dde4dd] bg-[#eef6ee] text-[#006c49]">
+                            <span className="material-symbols-outlined">
+                              event
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-[#161d19]">
+                              {job.company}
+                            </p>
+                            <p className="text-sm text-[#3c4a42]">{job.role}</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-semibold text-[#161d19]">
-                            {job.company}
-                          </p>
-                          <p className="text-sm text-[#3c4a42]">{job.role}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-sm leading-6 text-[#3c4a42]">
-                    No interviews tracked yet.
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm leading-6 text-[#3c4a42]">
+                      No interviews tracked yet.
+                    </p>
+                  )}
+                </div>
+
+                <div className="rounded-xl border border-[#dde4dd] bg-[#006c49] p-5 text-white">
+                  <p className="text-xl font-bold">Stay Focused</p>
+                  <p className="mt-2 text-sm leading-6 text-white/80">
+                    Track your progress and keep each opportunity moving
+                    forward.
                   </p>
-                )}
-              </div>
-
-              <div className="rounded-xl border border-[#dde4dd] bg-[#006c49] p-5 text-white">
-                <p className="text-xl font-bold">Stay Focused</p>
-                <p className="mt-2 text-sm leading-6 text-white/80">
-                  Track your progress and keep each opportunity moving forward.
-                </p>
-              </div>
-            </aside>
-          </div>
-        </>
-      )}
+                </div>
+              </aside>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
