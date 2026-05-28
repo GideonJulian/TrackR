@@ -101,7 +101,10 @@ const ApplicationLoading = () => (
       </div>
       <div className="-mx-4 flex gap-6 overflow-hidden px-4">
         {[0, 1, 2].map((tab) => (
-          <div key={tab} className="h-8 w-28 shrink-0 animate-pulse rounded bg-[#dde4dd]" />
+          <div
+            key={tab}
+            className="h-8 w-28 shrink-0 animate-pulse rounded bg-[#dde4dd]"
+          />
         ))}
       </div>
       {[0, 1, 2].map((card) => (
@@ -171,7 +174,7 @@ const Application = () => {
     return jobs.filter((job) =>
       [job.company, job.role, job.status, job.location, job.salary]
         .filter(Boolean)
-        .some((value) => value.toLowerCase().includes(query))
+        .some((value) => value.toLowerCase().includes(query)),
     );
   }, [jobs, searchTerm]);
 
@@ -186,7 +189,8 @@ const Application = () => {
   }, [filteredJobs]);
 
   const activeCount = jobs.filter((job) => job.status !== "Rejected").length;
-  const activeColumn = columns.find((column) => column.id === activeTab) || columns[1];
+  const activeColumn =
+    columns.find((column) => column.id === activeTab) || columns[1];
   const mobileJobs = jobsByColumn[activeColumn.id] || [];
 
   if (loading) {
@@ -418,9 +422,7 @@ const Application = () => {
                     }}
                     className="text-[20px] text-[#3c4a42]"
                   >
-                    <span className="material-symbols-outlined">
-                      more_vert
-                    </span>
+                    <span className="material-symbols-outlined">more_vert</span>
                   </button>
                   {openMenuId === job._id && (
                     <div className="absolute right-4 top-12 z-50 rounded-lg border border-[#dde4dd] bg-white shadow-lg">
@@ -440,7 +442,9 @@ const Application = () => {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/dashboard/applications/${job._id}?action=status`);
+                          navigate(
+                            `/dashboard/applications/${job._id}?action=status`,
+                          );
                           setOpenMenuId(null);
                         }}
                         className="flex w-full items-center gap-2 px-4 py-2 text-sm font-medium text-[#161d19] transition-colors hover:bg-[#eef6ee]"
@@ -453,8 +457,12 @@ const Application = () => {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (window.confirm("Are you sure you want to delete this application?")) {
-                            setJobs(jobs.filter(j => j._id !== job._id));
+                          if (
+                            window.confirm(
+                              "Are you sure you want to delete this application?",
+                            )
+                          ) {
+                            setJobs(jobs.filter((j) => j._id !== job._id));
                             setOpenMenuId(null);
                           }
                         }}
