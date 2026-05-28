@@ -112,11 +112,14 @@ const Profile = () => {
           throw new Error("Please login first");
         }
 
-        const response = await fetch("https://trackr-zpcz.onrender.com/api/v1/user/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const response = await fetch(
+          "https://trackr-zpcz.onrender.com/api/v1/user/me",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
 
         const data = await response.json();
 
@@ -138,7 +141,7 @@ const Profile = () => {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-            }
+            },
           );
           const jobsData = await jobsResponse.json();
 
@@ -203,14 +206,17 @@ const Profile = () => {
         throw new Error("Please login first");
       }
 
-      const response = await fetch("https://trackr-zpcz.onrender.com/api/v1/user/me", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        "https://trackr-zpcz.onrender.com/api/v1/user/me",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(form),
         },
-        body: JSON.stringify(form),
-      });
+      );
 
       let data = {};
 
@@ -227,7 +233,6 @@ const Profile = () => {
       if (!response.ok) {
         throw new Error(data.message || "Unable to update profile");
       }
-
 
       setForm({
         name: data.user?.name || "",
@@ -257,12 +262,15 @@ const Profile = () => {
         throw new Error("Please login first");
       }
 
-      const response = await fetch("https://trackr-zpcz.onrender.com/api/v1/user/delete", {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        "https://trackr-zpcz.onrender.com/api/v1/user/delete",
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       const data = await response.json();
 
@@ -295,7 +303,9 @@ const Profile = () => {
     return <ProfileLoading />;
   }
 
-  const interviewCount = jobs.filter((job) => job.status === "Interview").length;
+  const interviewCount = jobs.filter(
+    (job) => job.status === "Interview",
+  ).length;
   const profileSubtitle = form.bio || "Trackr member";
 
   return (
@@ -433,250 +443,250 @@ const Profile = () => {
       </div>
 
       <div className="hidden md:block">
-      <header className="mb-10">
-        <h1 className="text-3xl md:text-[45px] leading-tight font-bold text-[#161d19]">
-          Profile & Settings
-        </h1>
-        <p className="mt-2 text-base md:text-lg leading-7 text-[#3c4a42]">
-          Set up your public profile details after creating your account.
-        </p>
-      </header>
+        <header className="mb-10">
+          <h1 className="text-3xl md:text-[45px] leading-tight font-bold text-[#161d19]">
+            Profile & Settings
+          </h1>
+          <p className="mt-2 text-base md:text-lg leading-7 text-[#3c4a42]">
+            Set up your public profile details after creating your account.
+          </p>
+        </header>
 
-      <section className="space-y-10">
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-[#bbcabf] pt-8"
-        >
-          <div>
-            <h2 className="text-lg font-bold text-[#006c49]">
-              Personal Information
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-[#3c4a42]">
-              Your account starts with only your name and email. Add a profile
-              picture and bio when you are ready.
-            </p>
-          </div>
-
-          <div className="md:col-span-2 space-y-6">
-            {error && (
-              <p className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600">
-                {error}
+        <section className="space-y-10">
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-[#bbcabf] pt-8"
+          >
+            <div>
+              <h2 className="text-lg font-bold text-[#006c49]">
+                Personal Information
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-[#3c4a42]">
+                Your account starts with only your name and email. Add a profile
+                picture and bio when you are ready.
               </p>
-            )}
+            </div>
 
-            {message && (
-              <p className="rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-700">
-                {message}
-              </p>
-            )}
-
-            <div className="flex flex-col sm:flex-row sm:items-center gap-5">
-              <div className="h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-[#bbcabf] bg-[#eef6ee] shadow-sm">
-                {form.profilePicture ? (
-                  <img
-                    alt="Profile avatar"
-                    className="h-full w-full object-cover"
-                    src={form.profilePicture}
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center">
-                    <span className="material-symbols-outlined text-4xl text-[#006c49]">
-                      person
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              <div>
-                <input
-                  ref={fileInputRef}
-                  className="hidden"
-                  type="file"
-                  accept="image/png,image/jpeg"
-                  onChange={handleProfilePicture}
-                />
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="h-10 px-4 rounded-lg bg-[#006c49] text-white text-sm font-semibold hover:bg-[#00563a] transition-colors"
-                >
-                  Change Avatar
-                </button>
-                <p className="mt-2 text-sm text-[#3c4a42]">
-                  JPG or PNG. Max size of 800K.
+            <div className="md:col-span-2 space-y-6">
+              {error && (
+                <p className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+                  {error}
                 </p>
-              </div>
-            </div>
+              )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <label className="space-y-2">
-                <span className="block text-sm font-semibold text-[#161d19]">
-                  Full Name
-                </span>
-                <input
-                  className="w-full rounded-lg border border-[#bbcabf] bg-white px-4 py-3 text-[#161d19] outline-none transition-colors focus:border-[#006c49] focus:ring-1 focus:ring-[#006c49]"
-                  name="name"
-                  type="text"
-                  value={form.name}
-                  onChange={handleChange}
-                  disabled={loading}
-                  required
-                />
-              </label>
+              {message && (
+                <p className="rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-700">
+                  {message}
+                </p>
+              )}
 
-              <label className="space-y-2">
-                <span className="block text-sm font-semibold text-[#161d19]">
-                  Email Address
-                </span>
-                <input
-                  className="w-full rounded-lg border border-[#bbcabf] bg-white px-4 py-3 text-[#161d19] outline-none transition-colors focus:border-[#006c49] focus:ring-1 focus:ring-[#006c49]"
-                  name="email"
-                  type="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  disabled={loading}
-                  required
-                />
-              </label>
-            </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-5">
+                <div className="h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-[#bbcabf] bg-[#eef6ee] shadow-sm">
+                  {form.profilePicture ? (
+                    <img
+                      alt="Profile avatar"
+                      className="h-full w-full object-cover"
+                      src={form.profilePicture}
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <span className="material-symbols-outlined text-4xl text-[#006c49]">
+                        person
+                      </span>
+                    </div>
+                  )}
+                </div>
 
-            <label className="block space-y-2">
-              <span className="block text-sm font-semibold text-[#161d19]">
-                Professional Bio
-              </span>
-              <textarea
-                className="min-h-32 w-full rounded-lg border border-[#bbcabf] bg-white px-4 py-3 text-[#161d19] outline-none transition-colors focus:border-[#006c49] focus:ring-1 focus:ring-[#006c49]"
-                name="bio"
-                value={form.bio}
-                onChange={handleChange}
-                disabled={loading}
-                placeholder="Tell companies a little about your role, strengths, and career goals."
-              />
-            </label>
-
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                disabled={loading || saving}
-                className="h-10 px-6 rounded-lg bg-[#006c49] text-white text-sm font-semibold hover:bg-[#00563a] disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-700 transition-colors"
-              >
-                {saving ? "Saving..." : "Save Changes"}
-              </button>
-            </div>
-          </div>
-        </form>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-[#bbcabf] pt-8">
-          <div>
-            <h2 className="text-lg font-bold text-[#006c49]">
-              Account Security
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-[#3c4a42]">
-              Keep your account protected with regular password updates.
-            </p>
-          </div>
-
-          <div className="md:col-span-2">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-lg border border-[#bbcabf] bg-white p-5">
-              <div className="flex items-start gap-4">
-                <span className="material-symbols-outlined text-[#006c49]">
-                  lock
-                </span>
                 <div>
-                  <p className="font-bold text-[#161d19]">Change Password</p>
-                  <p className="mt-1 text-sm text-[#3c4a42]">
-                    Update your account password regularly.
+                  <input
+                    ref={fileInputRef}
+                    className="hidden"
+                    type="file"
+                    accept="image/png,image/jpeg"
+                    onChange={handleProfilePicture}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="h-10 px-4 rounded-lg bg-[#006c49] text-white text-sm font-semibold hover:bg-[#00563a] transition-colors"
+                  >
+                    Change Avatar
+                  </button>
+                  <p className="mt-2 text-sm text-[#3c4a42]">
+                    JPG or PNG. Max size of 800K.
                   </p>
                 </div>
               </div>
 
-              <button
-                type="button"
-                className="h-10 px-4 rounded-lg border border-[#bbcabf] bg-white text-sm font-semibold text-[#006c49] hover:bg-[#eef6ee] transition-colors"
-              >
-                Update
-              </button>
-            </div>
-          </div>
-        </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label className="space-y-2">
+                  <span className="block text-sm font-semibold text-[#161d19]">
+                    Full Name
+                  </span>
+                  <input
+                    className="w-full rounded-lg border border-[#bbcabf] bg-white px-4 py-3 text-[#161d19] outline-none transition-colors focus:border-[#006c49] focus:ring-1 focus:ring-[#006c49]"
+                    name="name"
+                    type="text"
+                    value={form.name}
+                    onChange={handleChange}
+                    disabled={loading}
+                    required
+                  />
+                </label>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[#bbcabf] pt-8">
-          <div>
-            <h2 className="font-bold text-[#161d19]">Sign Out</h2>
-            <p className="mt-1 text-sm text-[#3c4a42]">
-              End this session and return to the authentication page.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="h-10 px-4 rounded-lg border border-[#bbcabf] bg-white text-sm font-semibold text-[#006c49] hover:bg-[#eef6ee] transition-colors"
-          >
-            Logout
-          </button>
-        </div>
-
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[#bbcabf] pt-8 pb-6">
-          <div>
-            <h2 className="font-bold text-red-600">Delete Account</h2>
-            <p className="mt-1 text-sm text-[#3c4a42]">
-              Permanently remove all your data and career history. This cannot
-              be undone.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setShowDeleteModal(true)}
-            className="h-10 px-4 rounded-lg border border-red-500 bg-white text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors"
-          >
-            Delete Account
-          </button>
-        </div>
-      </section>
-
-      {showDeleteModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 px-4">
-          <div className="w-full max-w-md rounded-xl border border-red-200 bg-white p-6 shadow-2xl">
-            <div className="flex items-start gap-4">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600">
-                <span className="material-symbols-outlined">warning</span>
+                <label className="space-y-2">
+                  <span className="block text-sm font-semibold text-[#161d19]">
+                    Email Address
+                  </span>
+                  <input
+                    className="w-full rounded-lg border border-[#bbcabf] bg-white px-4 py-3 text-[#161d19] outline-none transition-colors focus:border-[#006c49] focus:ring-1 focus:ring-[#006c49]"
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    disabled={loading}
+                    required
+                  />
+                </label>
               </div>
 
-              <div>
-                <h2 className="text-lg font-bold text-[#161d19]">
-                  Delete account?
-                </h2>
-                <p className="mt-2 text-sm leading-6 text-[#3c4a42]">
-                  This will permanently delete your account, profile, and saved
-                  data. This action cannot be undone.
-                </p>
+              <label className="block space-y-2">
+                <span className="block text-sm font-semibold text-[#161d19]">
+                  Professional Bio
+                </span>
+                <textarea
+                  className="min-h-32 w-full rounded-lg border border-[#bbcabf] bg-white px-4 py-3 text-[#161d19] outline-none transition-colors focus:border-[#006c49] focus:ring-1 focus:ring-[#006c49]"
+                  name="bio"
+                  value={form.bio}
+                  onChange={handleChange}
+                  disabled={loading}
+                  placeholder="Tell companies a little about your role, strengths, and career goals."
+                />
+              </label>
+
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={loading || saving}
+                  className="h-10 px-6 rounded-lg bg-[#006c49] text-white text-sm font-semibold hover:bg-[#00563a] disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-700 transition-colors"
+                >
+                  {saving ? "Saving..." : "Save Changes"}
+                </button>
               </div>
             </div>
+          </form>
 
-            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-              <button
-                type="button"
-                disabled={deleting}
-                onClick={() => setShowDeleteModal(false)}
-                className="h-10 rounded-lg border border-[#bbcabf] px-4 text-sm font-semibold text-[#161d19] hover:bg-[#eef6ee] disabled:cursor-not-allowed disabled:opacity-60 transition-colors"
-              >
-                Cancel
-              </button>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-[#bbcabf] pt-8">
+            <div>
+              <h2 className="text-lg font-bold text-[#006c49]">
+                Account Security
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-[#3c4a42]">
+                Keep your account protected with regular password updates.
+              </p>
+            </div>
 
-              <button
-                type="button"
-                disabled={deleting}
-                onClick={handleDeleteAccount}
-                className="h-10 rounded-lg bg-red-600 px-4 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-red-300 transition-colors"
-              >
-                {deleting ? "Deleting..." : "Yes, delete account"}
-              </button>
+            <div className="md:col-span-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-lg border border-[#bbcabf] bg-white p-5">
+                <div className="flex items-start gap-4">
+                  <span className="material-symbols-outlined text-[#006c49]">
+                    lock
+                  </span>
+                  <div>
+                    <p className="font-bold text-[#161d19]">Change Password</p>
+                    <p className="mt-1 text-sm text-[#3c4a42]">
+                      Update your account password regularly.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="h-10 px-4 rounded-lg border border-[#bbcabf] bg-white text-sm font-semibold text-[#006c49] hover:bg-[#eef6ee] transition-colors"
+                >
+                  Update
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[#bbcabf] pt-8">
+            <div>
+              <h2 className="font-bold text-[#161d19]">Sign Out</h2>
+              <p className="mt-1 text-sm text-[#3c4a42]">
+                End this session and return to the authentication page.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="h-10 px-4 rounded-lg border border-[#bbcabf] bg-white text-sm font-semibold text-[#006c49] hover:bg-[#eef6ee] transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[#bbcabf] pt-8 pb-6">
+            <div>
+              <h2 className="font-bold text-red-600">Delete Account</h2>
+              <p className="mt-1 text-sm text-[#3c4a42]">
+                Permanently remove all your data and career history. This cannot
+                be undone.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowDeleteModal(true)}
+              className="h-10 px-4 rounded-lg border border-red-500 bg-white text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors"
+            >
+              Delete Account
+            </button>
+          </div>
+        </section>
+
+        {showDeleteModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 px-4">
+            <div className="w-full max-w-md rounded-xl border border-red-200 bg-white p-6 shadow-2xl">
+              <div className="flex items-start gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600">
+                  <span className="material-symbols-outlined">warning</span>
+                </div>
+
+                <div>
+                  <h2 className="text-lg font-bold text-[#161d19]">
+                    Delete account?
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-[#3c4a42]">
+                    This will permanently delete your account, profile, and
+                    saved data. This action cannot be undone.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <button
+                  type="button"
+                  disabled={deleting}
+                  onClick={() => setShowDeleteModal(false)}
+                  className="h-10 rounded-lg border border-[#bbcabf] px-4 text-sm font-semibold text-[#161d19] hover:bg-[#eef6ee] disabled:cursor-not-allowed disabled:opacity-60 transition-colors"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  disabled={deleting}
+                  onClick={handleDeleteAccount}
+                  className="h-10 rounded-lg bg-red-600 px-4 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-red-300 transition-colors"
+                >
+                  {deleting ? "Deleting..." : "Yes, delete account"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
