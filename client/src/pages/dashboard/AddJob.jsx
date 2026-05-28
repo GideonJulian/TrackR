@@ -160,7 +160,7 @@ export default function AddJob({ onSubmit }) {
        */
       showPopup(
         isEditing ? "Job updated successfully" : "Job added successfully",
-        "success"
+        "success",
       );
 
       /**
