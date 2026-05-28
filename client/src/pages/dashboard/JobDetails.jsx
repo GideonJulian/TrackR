@@ -94,9 +94,11 @@ const JobDetails = () => {
           throw new Error(data.message || "Unable to fetch job details");
         }
 
-        const foundJob = (fallbackData.jobs || fallbackData.applications || []).find(
-          (item) => item._id === jobId
-        );
+        const foundJob = (
+          fallbackData.jobs ||
+          fallbackData.applications ||
+          []
+        ).find((item) => item._id === jobId);
 
         if (!foundJob) {
           throw new Error("Job not found");
