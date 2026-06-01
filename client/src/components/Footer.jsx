@@ -1,5 +1,3 @@
-// Footer.jsx
-// Site footer with brand name, nav links, and copyright
 
 const footerLinks = [
   { label: "Privacy Policy", href: "#" },
