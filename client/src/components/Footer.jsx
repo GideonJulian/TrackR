@@ -11,11 +11,17 @@ export default function Footer() {
   return (
     <footer className="w-full bg-surface dark:bg-inverse-surface border-t border-outline-variant dark:border-outline pb-[80px]">
       <div className="flex flex-col justify-between items-center px-margin py-xl gap-md w-full max-w-[1280px] mx-auto text-center">
-        <span className="font-headline-md text-headline-md text-primary">Trackr</span>
+        <span className="font-headline-md text-headline-md text-primary">
+          Trackr
+        </span>
 
         <div className="flex gap-md font-body-md text-body-md text-on-surface-variant">
           {footerLinks.map(({ label, href }) => (
-            <a key={label} href={href} className="hover:text-primary transition-colors">
+            <a
+              key={label}
+              href={href}
+              className="hover:text-primary transition-colors"
+            >
               {label}
             </a>
           ))}
