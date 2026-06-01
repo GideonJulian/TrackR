@@ -4,6 +4,7 @@ import userRouter from "./routes/user.route.js";
 import jobRouter from "./routes/job.route.js";
 import resumeRouter from "./routes/resume.routes.js";
 
+
 const app = express();
 
 app.use(express.json());
