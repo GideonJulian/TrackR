@@ -30,7 +30,6 @@ export default function ProblemSection() {
       className="bg-[#eef6ee] py-[128px]"
     >
       <div className="max-w-7xl mx-auto px-[40px]">
-
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -43,7 +42,9 @@ export default function ProblemSection() {
           </h2>
 
           <p className="font-[400] text-[18px] leading-[1.6] text-[#3c4a42]">
-           Spreadsheets are rigid. Email threads get lost. Most job seekers lose track of 40% of their applications simply due to poor organization.
+            Spreadsheets are rigid. Email threads get lost. Most job seekers
+            lose track of 40% of their applications simply due to poor
+            organization.
           </p>
         </motion.div>
 
