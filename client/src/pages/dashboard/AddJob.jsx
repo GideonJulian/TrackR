@@ -195,6 +195,7 @@ export default function AddJob({ onSubmit }) {
     }
   };
 
+  
   return (
     <div className="w-full pt-8 pb-24">
       {/* STATUS POPUP */}
