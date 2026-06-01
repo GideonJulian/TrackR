@@ -1,7 +1,6 @@
 export const Logo = () => {
   return (
     <div className="flex flex-col items-center gap-3">
-      
       <div className="flex items-center text-3xl font-black tracking-tight">
         Track<span className="text-[#006c49]">R</span>
       </div>
@@ -13,12 +12,17 @@ export const Logo = () => {
 
       <style jsx>{`
         @keyframes slide {
-          0% { left: -50%; }
-          50% { left: 50%; }
-          100% { left: 100%; }
+          0% {
+            left: -50%;
+          }
+          50% {
+            left: 50%;
+          }
+          100% {
+            left: 100%;
+          }
         }
       `}</style>
-
     </div>
   );
 };
