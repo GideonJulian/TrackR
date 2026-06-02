@@ -39,4 +39,12 @@ app.get("/", (req, res) => {
   res.send("TrackR API is running 🚀");
 });
 
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  res.status(err.status || 500).json({
+    message: err.message || "Something went wrong",
+  });
+});
+
 export default app;
